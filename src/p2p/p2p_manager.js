@@ -44,6 +44,25 @@ export class P2PManager {
 
         // 新增: Blob接收隊列，用於處理多個連續的Blob
         this.pendingBlobRequests = [];
+
+        // 初始化消息處理器系統
+        this._initializeMessageHandlers();
+    }
+
+    // 初始化消息處理器系統
+    _initializeMessageHandlers() {
+        // 初始化基礎消息類型的處理器陣列
+        const basicMessageTypes = [
+            'metadata-ack', 'blob-received', 'resource-received',
+            'resource-metadata', 'blob-data-marker', 'blob-transfer-complete',
+            'resource-request'
+        ];
+
+        for (const type of basicMessageTypes) {
+            this.messageHandlers.set(type, []);
+        }
+
+        console.log(`[P2P消息] 已初始化消息處理器系統`);
     }
 
     // 生成更安全、包含更多信息的請求ID
@@ -168,6 +187,10 @@ export class P2PManager {
                 (frame) => {
                     console.log('已連接到STOMP服務器:', frame);
                     this.isConnected = true;
+                    this.stompClient.send("/app/register", JSON.stringify({
+                        clientId: this.clientId,
+                        type: "REGISTER"
+                    }));
                     // 訂閱客戶端專屬隊列
                     this.stompClient.subscribe(`/topic/signal.${this.clientId}`, message => {
                         const data = JSON.parse(message.body);
@@ -204,8 +227,12 @@ export class P2PManager {
      * @param {Function} handler - 處理函數
      */
     registerMessageHandler(type, handler) {
-        this.messageHandlers.set(type, handler);
-        console.log(`[P2P消息] 已註冊消息處理器: ${type}`);
+        if (!this.messageHandlers.has(type)) {
+            this.messageHandlers.set(type, []);
+        }
+
+        this.messageHandlers.get(type).push(handler);
+        console.log(`[P2P消息] 已註冊消息處理器: ${type}, 當前處理器數量: ${this.messageHandlers.get(type).length}`);
     }
 
     // 請求資源方法，使用直接Blob傳輸
@@ -335,15 +362,20 @@ export class P2PManager {
         const request = this.activeResourceRequests.get(requestId);
         if (!request) return;
 
+        console.log(`[P2P調試] 為請求 ${requestId} 設置Blob接收處理器`);
+
         // 添加處理器處理資源元數據
         this.registerMessageHandler('resource-metadata', (fromPeerId, metaData) => {
             // 檢查請求ID是否匹配
-            if (metaData.requestId !== requestId) return;
+            if (metaData.requestId !== requestId) {
+                console.log(`[P2P調試] 收到的元數據請求ID ${metaData.requestId} 與當前處理器的請求ID ${requestId} 不匹配`);
+                return false;
+            }
 
             // 檢查發送者是否匹配
             if (request.peerId !== fromPeerId) {
                 console.warn(`[P2P請求] 警告: 收到來自非請求目標的元數據 ${fromPeerId}, 預期 ${request.peerId}`);
-                return;
+                return false;
             }
 
             console.log(`[P2P請求] 收到資源元數據 (請求ID: ${requestId}): 類型=${metaData.contentType}, 大小=${metaData.size}`);
@@ -373,42 +405,53 @@ export class P2PManager {
 
             // 發送確認接收元數據
             try {
+                console.log(`[P2P調試] 準備向 ${fromPeerId} 發送請求ID為 ${requestId} 的元數據確認`);
+
                 this.sendMessage(fromPeerId, 'metadata-ack', {
                     requestId: requestId,
                     status: 'received',
                     readyForBlob: true
                 }).then(() => {
                     console.log(`[P2P請求] 已發送元數據確認並請求Blob數據 (請求ID: ${requestId})`);
+                    console.log(`[P2P調試] 已向 ${fromPeerId} 發送請求ID為 ${requestId} 的元數據確認`);
                 }).catch(err => {
                     console.error(`[P2P請求] 發送元數據確認失敗:`, err);
                 });
             } catch (error) {
                 console.error(`[P2P請求] 發送元數據確認錯誤:`, error);
             }
+
+            // 返回 false 表示這不是一次性處理器，應該保留
+            return false;
         });
 
         // 處理Blob資料標記消息 - 新增
         this.registerMessageHandler('blob-data-marker', (fromPeerId, markerData) => {
-            if (markerData.requestId !== requestId) return;
+            if (markerData.requestId !== requestId) return false;
 
             console.log(`[P2P請求] 收到Blob資料標記 (請求ID: ${requestId}): 大小=${markerData.size}`);
-
-            // 將此請求ID設為下一個預期接收Blob的請求
-            this.nextExpectedBlobRequestId = requestId;
 
             // 更新請求狀態
             const req = this.activeResourceRequests.get(requestId);
             if (req) {
                 req.waitingForBlob = true;
                 req.lastActivityTime = Date.now();
-                req.expectedBlobSize = markerData.size;
+
+                // 設置預期大小 - 關鍵!
+                req.expectedSize = markerData.size;
+                console.log(`[P2P請求] 設置請求 ${requestId} 的預期Blob大小: ${markerData.size}字節`);
+
+                // 將此請求ID設為下一個預期接收Blob的請求
+                this.nextExpectedBlobRequestId = requestId;
             }
+
+            return false;
         });
 
         // 處理Blob傳輸完成通知
         this.registerMessageHandler('blob-transfer-complete', (fromPeerId, completeData) => {
             // 檢查請求ID是否匹配
-            if (completeData.requestId !== requestId) return;
+            if (completeData.requestId !== requestId) return false;
 
             console.log(`[P2P請求] 收到Blob傳輸完成消息 (請求ID: ${requestId})`);
 
@@ -430,6 +473,9 @@ export class P2PManager {
                     }
                 }, 10000);
             }
+
+            // 返回 true 表示這是一次性處理器，處理完就可以移除了
+            return true;
         });
     }
 
@@ -683,35 +729,40 @@ export class P2PManager {
 
             console.log(`[P2P傳輸] 元數據已發送，等待確認`);
 
-            // 2. 等待元數據確認
+            // 2. 等待元數據確認 - 改進版
             const metadataAckPromise = new Promise((resolve, reject) => {
                 const timeout = setTimeout(() => {
                     reject(new Error('等待元數據確認超時'));
                 }, 10000);
 
-                const handler = (fromPeerId, ackData) => {
+                // 創建一次性處理器
+                const oneTimeHandler = (fromPeerId, ackData) => {
                     if (fromPeerId === peerId && ackData.requestId === requestId) {
                         clearTimeout(timeout);
-                        // 取消監聽
-                        const originalHandler = this.messageHandlers.get('metadata-ack');
-                        this.messageHandlers.set('metadata-ack', originalHandler);
+                        console.log(`[P2P傳輸] 收到元數據確認: `, ackData);
                         resolve(ackData);
+                        return true; // 表示這是一次性處理器，可以移除
                     }
+                    return false; // 不匹配，保留
                 };
 
-                // 保存原始處理器
-                const originalHandler = this.messageHandlers.get('metadata-ack') || (() => { });
+                // 添加到處理器列表
+                this.registerMessageHandler('metadata-ack', oneTimeHandler);
 
-                // 設置新處理器
-                this.messageHandlers.set('metadata-ack', (fromPeerId, ackData) => {
-                    originalHandler(fromPeerId, ackData);
-                    handler(fromPeerId, ackData);
-                });
+                // 設置自動清理，防止內存洩漏
+                setTimeout(() => {
+                    const handlers = this.messageHandlers.get('metadata-ack');
+                    if (handlers) {
+                        const index = handlers.indexOf(oneTimeHandler);
+                        if (index !== -1) {
+                            handlers.splice(index, 1);
+                        }
+                    }
+                }, 15000); // 15秒後自動清理
             });
 
             try {
                 const ackResult = await metadataAckPromise;
-                console.log(`[P2P傳輸] 收到元數據確認: `, ackResult);
 
                 // 確認對方已準備好接收Blob
                 if (!ackResult.readyForBlob) {
@@ -770,28 +821,22 @@ export class P2PManager {
                             reject(new Error('等待Blob接收確認超時'));
                         }, 10000); // 10秒超時
 
-                        const handler = (fromPeerId, receiveData) => {
+                        // 創建一次性處理器
+                        const oneTimeHandler = (fromPeerId, receiveData) => {
                             if (fromPeerId === peerId && receiveData.requestId === requestId) {
                                 clearTimeout(timeout);
-                                // 取消監聽
-                                const originalHandler = this.messageHandlers.get('blob-received');
-                                this.messageHandlers.set('blob-received', originalHandler);
+                                console.log(`[P2P傳輸] 收到Blob接收確認: `, receiveData);
                                 resolve(receiveData);
+                                return true; // 表示這是一次性處理器，可以移除
                             }
+                            return false; // 不匹配，保留
                         };
 
-                        // 保存原始處理器
-                        const originalHandler = this.messageHandlers.get('blob-received') || (() => { });
-
-                        // 設置新處理器
-                        this.messageHandlers.set('blob-received', (fromPeerId, receiveData) => {
-                            originalHandler(fromPeerId, receiveData);
-                            handler(fromPeerId, receiveData);
-                        });
+                        // 添加到處理器列表
+                        this.registerMessageHandler('blob-received', oneTimeHandler);
                     });
 
                     const receiveResult = await blobReceivePromise;
-                    console.log(`[P2P傳輸] 收到Blob接收確認: `, receiveResult);
                     blobReceived = true;
                 } catch (receiveError) {
                     retryCount++;
@@ -842,6 +887,37 @@ export class P2PManager {
         try {
             const { type, data } = message;
 
+            // 獲取處理器陣列
+            const handlers = this.messageHandlers.get(type);
+
+            if (handlers && handlers.length > 0) {
+                console.log(`[P2P消息] 調用 ${type} 類型的 ${handlers.length} 個處理器`);
+
+                // 複製陣列以防止迭代過程中的修改
+                const handlersToExecute = [...handlers];
+
+                for (let i = 0; i < handlersToExecute.length; i++) {
+                    try {
+                        // 調用處理器
+                        const handler = handlersToExecute[i];
+                        const result = handler(peerId, data);
+
+                        // 如果處理器返回 true，表示這是一次性處理器，需要移除
+                        if (result === true) {
+                            const index = handlers.indexOf(handler);
+                            if (index !== -1) {
+                                handlers.splice(index, 1);
+                                console.log(`[P2P消息] 移除一次性處理器: ${type}`);
+                            }
+                        }
+                    } catch (handlerError) {
+                        console.error(`[P2P消息] 處理器執行錯誤:`, handlerError);
+                    }
+                }
+            } else {
+                console.log(`[P2P消息] 未找到類型為 ${type} 的消息處理器`);
+            }
+
             // 特殊處理資源響應消息
             if (type.startsWith('resource-response:')) {
                 // 提取URL和對應的請求ID
@@ -888,26 +964,6 @@ export class P2PManager {
                 } else {
                     console.warn(`[P2P消息] 找不到對應的資源請求: ${url}`);
                 }
-                return; // 已處理完畢
-            }
-
-            // 處理確認消息
-            if (type === 'metadata-ack' || type === 'blob-received' || type === 'resource-received') {
-                console.log(`[P2P消息] 收到確認消息: ${type}, 數據:`, data);
-                // 找到對應的處理器並調用
-                const handler = this.messageHandlers.get(type);
-                if (handler) {
-                    handler(peerId, data);
-                    return; // 已處理完畢
-                }
-            }
-
-            // 一般消息處理
-            const handler = this.messageHandlers.get(type);
-            if (handler) {
-                handler(peerId, data);
-            } else {
-                console.log(`[P2P消息] 未找到類型為 ${type} 的消息處理器`);
             }
 
             // 觸發消息事件
@@ -918,102 +974,77 @@ export class P2PManager {
     }
 
     /**
-     * 設置數據通道的事件處理 - 改進版，更好地處理Blob
-     */
-    _setupDataChannel(peerId, dataChannel) {
-        console.log(`[P2P數據通道] 設置數據通道 [${dataChannel.label}]，當前狀態: ${dataChannel.readyState}`);
-
-        dataChannel.binaryType = 'blob'; // 設置為 blob 以直接處理Blob數據
-
-        dataChannel.onopen = () => {
-            console.log(`[P2P數據通道] 與 ${peerId} 的數據通道已打開`);
-            // 觸發連接事件
-            this._dispatchEvent('peerConnected', { peerId });
-        };
-
-        dataChannel.onclose = () => {
-            console.log(`[P2P數據通道] 與 ${peerId} 的數據通道已關閉`);
-            // 觸發斷開連接事件
-            this._dispatchEvent('peerDisconnected', { peerId });
-        };
-
-        dataChannel.onerror = (error) => {
-            console.error(`[P2P數據通道] 數據通道錯誤:`, error);
-        };
-
-        // 處理收到的消息 - 改進Blob處理流程
-        dataChannel.onmessage = (event) => {
-            const data = event.data;
-
-            // 處理接收到的Blob數據
-            if (data instanceof Blob) {
-                console.log(`[P2P數據通道] 收到Blob數據: ${data.size} 字節, 類型: ${data.type || '未指定'}`);
-
-                // 處理Blob數據
-                this._handleReceivedBlob(peerId, data);
-            }
-            // 處理JSON消息
-            else if (typeof data === 'string') {
-                try {
-                    const message = JSON.parse(data);
-                    this._handlePeerMessage(peerId, message);
-                } catch (parseError) {
-                    console.error(`[P2P數據通道] JSON解析錯誤:`, parseError);
-                }
-            } else {
-                console.warn(`[P2P數據通道] 收到未知類型的數據: ${typeof data}`);
-            }
-        };
-
-        // 保存數據通道引用
-        let peerInfo = this.peerConnections.get(peerId);
-        // if (!peerInfo) {
-        //     peerInfo = this._createPeerConnection(peerId);
-        //     this.peerConnections.set(peerId, peerInfo);
-        // }
-        peerInfo.dataChannel = dataChannel;
-    }
-
-    /**
-     * 處理接收到的Blob數據 - 新增方法
+     * 處理接收到的Blob數據
      */
     _handleReceivedBlob(peerId, blob) {
-        // 首先檢查是否有預期接收Blob的請求ID
-        if (this.nextExpectedBlobRequestId) {
-            const requestId = this.nextExpectedBlobRequestId;
-            const request = this.activeResourceRequests.get(requestId);
+        console.log(`[P2P數據通道] 收到Blob數據: ${blob.size} 字節, 類型: ${blob.type || '未指定'}`);
 
-            if (request) {
-                console.log(`[P2P數據通道] 將Blob關聯到請求ID: ${requestId}`);
+        // 1. 優先使用大小匹配尋找請求
+        let matchedBySize = false;
+        for (const [requestId, request] of this.activeResourceRequests.entries()) {
+            if (request.waitingForBlob &&
+                request.expectedSize === blob.size &&
+                request.peerId === peerId) {
+
+                console.log(`[P2P數據通道] 根據大小匹配(${blob.size}字節)找到請求: ${requestId}`);
                 this._processBlobReceived(requestId, blob);
-                this.nextExpectedBlobRequestId = null; // 清除期望值
+                matchedBySize = true;
+
+                // 如果這是當前預期的Blob，清除預期
+                if (this.nextExpectedBlobRequestId === requestId) {
+                    this.nextExpectedBlobRequestId = null;
+                }
+
+                // 從等待隊列中移除
+                const index = this.pendingBlobRequests.indexOf(requestId);
+                if (index !== -1) {
+                    this.pendingBlobRequests.splice(index, 1);
+                }
+
                 return;
             }
         }
 
-        // 如果沒有明確的預期請求ID，檢查所有等待Blob的請求
+        // 2. 如果無法通過大小匹配，嘗試使用預期的請求ID
+        if (!matchedBySize && this.nextExpectedBlobRequestId) {
+            const request = this.activeResourceRequests.get(this.nextExpectedBlobRequestId);
+
+            if (request && request.waitingForBlob) {
+                console.log(`[P2P數據通道] 使用預期請求ID關聯Blob: ${this.nextExpectedBlobRequestId}`);
+                console.warn(`[P2P數據通道] 警告: Blob大小不匹配 - 預期=${request.expectedSize}, 實際=${blob.size}`);
+
+                this._processBlobReceived(this.nextExpectedBlobRequestId, blob);
+                this.nextExpectedBlobRequestId = null;
+                return;
+            }
+        }
+
+        // 3. 如果上述方法都失敗，使用等待隊列
         if (this.pendingBlobRequests.length > 0) {
-            // 從隊列中獲取第一個等待Blob的請求
             const requestId = this.pendingBlobRequests.shift();
             const request = this.activeResourceRequests.get(requestId);
 
             if (request && request.waitingForBlob) {
-                console.log(`[P2P數據通道] 從等待隊列中找到請求ID: ${requestId} 來關聯Blob`);
+                console.log(`[P2P數據通道] 使用隊列中的第一個請求: ${requestId}`);
+                console.warn(`[P2P數據通道] 警告: Blob大小不匹配 - 預期=${request.expectedSize}, 實際=${blob.size}`);
+
                 this._processBlobReceived(requestId, blob);
                 return;
             }
         }
 
-        // 如果找不到等待Blob的請求，嘗試查找任何活動請求
+        // 4. 最後嘗試任何等待Blob的請求
         for (const [reqId, req] of this.activeResourceRequests.entries()) {
-            if (req.receivedMetadata && req.waitingForBlob && !req.blobReceived && req.peerId === peerId) {
-                console.log(`[P2P數據通道] 找到匹配的活動請求ID: ${reqId} 來關聯Blob`);
+            if (req.waitingForBlob && !req.blobReceived && req.peerId === peerId) {
+                console.log(`[P2P數據通道] 使用任何等待中的請求: ${reqId}`);
+                console.warn(`[P2P數據通道] 警告: Blob大小不匹配 - 預期=${req.expectedSize}, 實際=${blob.size}`);
+
                 this._processBlobReceived(reqId, blob);
                 return;
             }
         }
 
-        console.warn(`[P2P數據通道] 收到Blob但找不到匹配的請求，無法處理`);
+        console.warn(`[P2P數據通道] 收到Blob但找不到匹配的請求，無法處理: ${blob.size}字節`);
     }
 
     _handleSignalingMessage(data) {
@@ -1040,23 +1071,67 @@ export class P2PManager {
         console.log(`[P2P信令] 收到來自 ${data.sender} 的offer`);
 
         try {
-            let peerConnection = this.peerConnections.get(data.sender);
+            // 檢查是否已存在連接
+            let peerInfo = this.peerConnections.get(data.sender);
+            let peerConnection;
 
-            if (!peerConnection) {
+            if (!peerInfo) {
+                console.log(`[P2P信令] 為 ${data.sender} 創建新的連接`);
                 peerConnection = this._createPeerConnection(data.sender);
-                this.peerConnections.set(data.sender, peerConnection);
+                // _createPeerConnection 會自動將 peerConnection 存入 Map
+                peerInfo = this.peerConnections.get(data.sender);
+            } else {
+                console.log(`[P2P信令] 使用現有連接 ${data.sender}`);
+                peerConnection = peerInfo.connection;
+
+                // 檢查信令狀態
+                console.log(`[P2P信令] 現有連接狀態: ${peerConnection.signalingState}`);
+
+                // 如果已經在處理交涉或處於非穩定狀態，先重置連接
+                if (peerConnection.signalingState !== 'stable') {
+                    console.log(`[P2P信令] 連接不在穩定狀態，嘗試重置連接`);
+                    try {
+                        // 嘗試回到穩定狀態
+                        await peerConnection.setLocalDescription({ type: "rollback" });
+                        console.log(`[P2P信令] 成功回滾到穩定狀態`);
+                    } catch (rollbackError) {
+                        console.warn(`[P2P信令] 回滾連接失敗:`, rollbackError);
+
+                        // 如果回滾失敗，建立新連接
+                        console.log(`[P2P信令] 創建新的連接替代現有連接`);
+                        peerConnection = this._createPeerConnection(data.sender);
+                        // _createPeerConnection 會自動將新連接存入 Map
+                        peerInfo = this.peerConnections.get(data.sender);
+                    }
+                }
             }
 
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.data));
-            const answer = await peerConnection.createAnswer();
-            await peerConnection.setLocalDescription(answer);
+            // 確保取得正確連接引用
+            peerConnection = peerInfo.connection;
 
+            // 記錄當前信令狀態
+            console.log(`[P2P信令] 設置遠程描述前的信令狀態: ${peerConnection.signalingState}`);
+
+            // 設置遠程描述
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.data));
+            console.log(`[P2P信令] 已設置遠程描述，當前信令狀態: ${peerConnection.signalingState}`);
+
+            // 創建 answer
+            const answer = await peerConnection.createAnswer();
+            console.log(`[P2P信令] 已創建 answer`);
+
+            // 設置本地描述
+            await peerConnection.setLocalDescription(answer);
+            console.log(`[P2P信令] 已設置本地描述，當前信令狀態: ${peerConnection.signalingState}`);
+
+            // 發送 answer
             this._sendSignal({
                 type: 'answer',
                 sender: this.clientId,
                 receiver: data.sender,
                 data: answer
             });
+            console.log(`[P2P信令] 已發送 answer 到 ${data.sender}`);
         } catch (error) {
             console.error('[P2P信令] 處理offer時出錯:', error);
         }
@@ -1066,10 +1141,11 @@ export class P2PManager {
         console.log(`[P2P信令] 收到來自 ${data.sender} 的answer`);
 
         try {
-            const peerConnection = this.peerConnections.get(data.sender);
+            const peerInfo = this.peerConnections.get(data.sender);
 
-            if (peerConnection) {
-                await peerConnection.setRemoteDescription(new RTCSessionDescription(data.data));
+            if (peerInfo && peerInfo.connection) {
+                await peerInfo.connection.setRemoteDescription(new RTCSessionDescription(data.data));
+                console.log(`[P2P信令] 已設置遠程描述 (answer)`);
             } else {
                 console.warn(`[P2P信令] 找不到對應的連接: ${data.sender}`);
             }
@@ -1080,10 +1156,13 @@ export class P2PManager {
 
     async _handleIceCandidate(data) {
         try {
-            const peerConnection = this.peerConnections.get(data.sender);
+            // 獲取 peerInfo 對象
+            const peerInfo = this.peerConnections.get(data.sender);
 
-            if (peerConnection) {
-                await peerConnection.addIceCandidate(new RTCIceCandidate(data.data));
+            if (peerInfo && peerInfo.connection) {
+                // 使用 connection 屬性
+                await peerInfo.connection.addIceCandidate(new RTCIceCandidate(data.data));
+                console.log(`[P2P信令] 成功添加來自 ${data.sender} 的 ICE 候選`);
             } else {
                 console.warn(`[P2P信令] 找不到對應的連接: ${data.sender}`);
             }
@@ -1101,8 +1180,8 @@ export class P2PManager {
         }
 
         // 檢查現有連接
-        const existingConnection = this.peerConnections.get(peerId);
-        if (existingConnection && existingConnection.dataChannel && existingConnection.dataChannel.readyState === 'open') {
+        const existingPeerInfo = this.peerConnections.get(peerId);
+        if (existingPeerInfo && existingPeerInfo.dataChannel && existingPeerInfo.dataChannel.readyState === 'open') {
             return Promise.resolve();
         }
 
@@ -1115,8 +1194,8 @@ export class P2PManager {
             }
 
             // 有現有連接但數據通道未就緒
-            if (existingConnection && existingConnection.dataChannel) {
-                if (existingConnection.dataChannel.readyState === 'connecting') {
+            if (existingPeerInfo && existingPeerInfo.dataChannel) {
+                if (existingPeerInfo.dataChannel.readyState === 'connecting') {
                     // 等待現有連接完成
                     return new Promise((resolve, reject) => {
                         const timeout = setTimeout(() => {
@@ -1124,11 +1203,11 @@ export class P2PManager {
                         }, 10000);
 
                         const checkState = () => {
-                            if (existingConnection.dataChannel.readyState === 'open') {
+                            if (existingPeerInfo.dataChannel.readyState === 'open') {
                                 clearTimeout(timeout);
                                 resolve();
-                            } else if (existingConnection.dataChannel.readyState === 'closed' ||
-                                existingConnection.dataChannel.readyState === 'closing') {
+                            } else if (existingPeerInfo.dataChannel.readyState === 'closed' ||
+                                existingPeerInfo.dataChannel.readyState === 'closing') {
                                 clearTimeout(timeout);
                                 // 如果數據通道已關閉，建立新連接
                                 this.connectToPeer(peerId)
@@ -1141,8 +1220,8 @@ export class P2PManager {
 
                         checkState();
                     });
-                } else if (existingConnection.dataChannel.readyState === 'closed' ||
-                    existingConnection.dataChannel.readyState === 'closing') {
+                } else if (existingPeerInfo.dataChannel.readyState === 'closed' ||
+                    existingPeerInfo.dataChannel.readyState === 'closing') {
                     // 清理已關閉的連接
                     this.peerConnections.delete(peerId);
                 }
@@ -1174,7 +1253,8 @@ export class P2PManager {
 
             // 建立新連接
             const peerConnection = this._createPeerConnection(peerId);
-            this.peerConnections.set(peerId, peerConnection);
+            // 獲取最新的 peerInfo
+            const peerInfo = this.peerConnections.get(peerId);
 
             return new Promise((resolve, reject) => {
                 // 設置超時
@@ -1196,15 +1276,15 @@ export class P2PManager {
 
                         // 監控數據通道
                         const checkChannel = () => {
-                            if (peerConnection.dataChannel) {
-                                if (peerConnection.dataChannel.readyState === 'open') {
+                            if (peerInfo.dataChannel) {
+                                if (peerInfo.dataChannel.readyState === 'open') {
                                     clearTimeout(timeout);
                                     resolve();
-                                } else if (peerConnection.dataChannel.readyState === 'connecting') {
+                                } else if (peerInfo.dataChannel.readyState === 'connecting') {
                                     setTimeout(checkChannel, 500);
                                 } else {
                                     clearTimeout(timeout);
-                                    reject(new Error(`數據通道處於 ${peerConnection.dataChannel.readyState} 狀態`));
+                                    reject(new Error(`數據通道處於 ${peerInfo.dataChannel.readyState} 狀態`));
                                 }
                             } else {
                                 setTimeout(checkChannel, 500);
@@ -1235,6 +1315,13 @@ export class P2PManager {
             iceServers: this.iceServers
         });
 
+        // 創建並儲存連接信息
+        const peerInfo = {
+            connection: peerConnection,
+            dataChannel: null
+        };
+        this.peerConnections.set(peerId, peerInfo);
+
         // 監聽ICE候選者
         peerConnection.onicecandidate = (event) => {
             if (event.candidate) {
@@ -1258,7 +1345,7 @@ export class P2PManager {
                 // 延遲清理，避免在使用中關閉
                 setTimeout(() => {
                     if (this.peerConnections.has(peerId) &&
-                        this.peerConnections.get(peerId) === peerConnection) {
+                        this.peerConnections.get(peerId).connection === peerConnection) {
                         console.log(`[P2P連接] 清理已斷開的連接: ${peerId}`);
                         this.peerConnections.delete(peerId);
                     }
@@ -1274,24 +1361,105 @@ export class P2PManager {
         // 監聽遠程數據通道
         peerConnection.ondatachannel = (event) => {
             console.log(`[P2P連接] 收到遠程數據通道`);
-            this._setupDataChannel(peerId, event.channel);
+
+            // 設置數據通道事件
+            this._setupDataChannelEvents(peerId, event.channel);
+
+            // 保存到 peerInfo
+            const currentPeerInfo = this.peerConnections.get(peerId);
+            if (currentPeerInfo) {
+                currentPeerInfo.dataChannel = event.channel;
+            }
         };
 
         // 創建數據通道
         try {
             const dataChannel = peerConnection.createDataChannel('dataChannel', {
-                ordered: true           // 保證順序
+                ordered: false           // 保證順序
             });
 
             // 設置緩衝區閾值
             dataChannel.bufferedAmountLowThreshold = 256 * 1024; // 256KB
 
-            this._setupDataChannel(peerId, dataChannel);
+            // 設置數據通道事件
+            this._setupDataChannelEvents(peerId, dataChannel);
+
+            // 直接將數據通道保存到 peerInfo
+            peerInfo.dataChannel = dataChannel;
+
+            console.log(`[P2P連接] 成功創建數據通道並保存到 peerInfo`);
         } catch (error) {
             console.error(`[P2P連接] 創建數據通道失敗:`, error);
         }
 
         return peerConnection;
+    }
+
+    /**
+     * 設置數據通道事件 - 新方法，僅處理事件
+     */
+    _setupDataChannelEvents(peerId, dataChannel) {
+        console.log(`[P2P數據通道] 設置數據通道 [${dataChannel.label}]，當前狀態: ${dataChannel.readyState}`);
+
+        dataChannel.binaryType = 'blob'; // 設置為 blob 以直接處理Blob數據
+
+        dataChannel.onopen = () => {
+            console.log(`[P2P數據通道] 與 ${peerId} 的數據通道已打開`);
+            // 觸發連接事件
+            this._dispatchEvent('peerConnected', { peerId });
+        };
+
+        dataChannel.onclose = () => {
+            console.log(`[P2P數據通道] 與 ${peerId} 的數據通道已關閉`);
+            // 觸發斷開連接事件
+            this._dispatchEvent('peerDisconnected', { peerId });
+        };
+
+        dataChannel.onerror = (error) => {
+            console.error(`[P2P數據通道] 數據通道錯誤:`, error);
+        };
+
+        // 處理收到的消息
+        dataChannel.onmessage = (event) => {
+            const data = event.data;
+
+            // 處理接收到的Blob數據
+            if (data instanceof Blob) {
+                console.log(`[P2P數據通道] 收到Blob數據: ${data.size} 字節, 類型: ${data.type || '未指定'}`);
+                this._handleReceivedBlob(peerId, data);
+            }
+            // 處理JSON消息
+            else if (typeof data === 'string') {
+                try {
+                    const message = JSON.parse(data);
+                    this._handlePeerMessage(peerId, message);
+                } catch (parseError) {
+                    console.error(`[P2P數據通道] JSON解析錯誤:`, parseError);
+                }
+            } else {
+                console.warn(`[P2P數據通道] 收到未知類型的數據: ${typeof data}`);
+            }
+        };
+    }
+
+    /**
+     * 保持向下兼容性的舊方法 - 防止其他地方調用出錯
+     */
+    _setupDataChannel(peerId, dataChannel) {
+        console.log(`[P2P數據通道] 舊方法被調用，轉發到新方法`);
+
+        // 設置事件
+        this._setupDataChannelEvents(peerId, dataChannel);
+
+        // 保存數據通道
+        let peerInfo = this.peerConnections.get(peerId);
+        if (!peerInfo) {
+            console.log(`[P2P數據通道] 創建新的 peerInfo 對象用於保存數據通道`);
+            peerInfo = { connection: null, dataChannel: null };
+            this.peerConnections.set(peerId, peerInfo);
+        }
+
+        peerInfo.dataChannel = dataChannel;
     }
 
     /**
@@ -1356,7 +1524,9 @@ export class P2PManager {
                 if (peerInfo.dataChannel) {
                     peerInfo.dataChannel.close();
                 }
-                peerInfo.close();
+                if (peerInfo.connection) {
+                    peerInfo.connection.close();
+                }
             } catch (error) {
                 console.warn(`[P2P連接] 關閉與 ${peerId} 的連接時出錯:`, error);
             }

@@ -153,6 +153,21 @@ async function calculateHash(str) {
 }
 
 
+function _isBootstrapResource(url) {
+    // 檢測 P2P 系統的關鍵資源，比如 p2p_client.js、p2p_manager.js 等
+    // 這些資源應該從網絡直接獲取，而不是通過 P2P
+    const bootstrapPatterns = [
+        'p2p_client.js',
+        'p2p_manager.js',
+        'indexdb-storage.js',
+        'webstomp',      // webstomp 庫
+        'HomeView',
+        'vue-vendor',    // Vue 核心庫
+        'p2p-vendor'     // P2P 相關庫
+    ];
+
+    return bootstrapPatterns.some(pattern => url.includes(pattern));
+}
 // 安裝事件 - 設置初始緩存
 self.addEventListener('install', (event) => {
     console.log('Service Worker 正在安裝...');
@@ -162,6 +177,7 @@ self.addEventListener('install', (event) => {
 // 激活事件 - 接管控制
 self.addEventListener('activate', (event) => {
     console.log('Service Worker 已激活');
+    event.waitUntil(clients.claim());
     return self.clients.claim();
 });
 
@@ -192,8 +208,8 @@ self.addEventListener('fetch', (event) => {
                     pathname.includes('/index');
 
                 // 如果是HTML頁面，我們直接從網絡獲取最新版本
-                if (isHtmlPage) {
-                    console.log('Service Worker: HTML頁面請求，從網絡獲取:', event.request.url);
+                if (isHtmlPage || _isBootstrapResource(originalRequestUrl)) {
+                    console.log('Service Worker: 關鍵資源，從網絡獲取:', originalRequestUrl);
                     return fetch(event.request);
                 }
                 // 嘗試從 IndexedDB 獲取資源

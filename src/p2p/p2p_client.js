@@ -12,14 +12,14 @@ export class p2p_client {
         };
 
         // 內部狀態
-        this.clientId = this._generateClientId();
+        this.clientId = this._getStoredClientId() || this._generateClientId();
         this.isReady = false;
         this.p2pManager = null;
         this.geolocation = { latitude: 0, longitude: 0 };
         this.contentCache = new Map(); // 本地內容緩存記錄
         this.requestLocks = new Map(); // 請求ID -> 鎖狀態
-        this.resourceRequestQueue = [];
-        this.isProcessingQueue = false;
+        // 請求隊列和處理標記已移除
+
         // 事件監聽器
         this.eventListeners = new Map();
     }
@@ -112,7 +112,6 @@ export class p2p_client {
         }
     }
 
-
     /**
      * 根據URL確定內容類型
      * @param {string} url - 資源URL
@@ -158,12 +157,25 @@ export class p2p_client {
             this.p2pManager.registerMessageHandler('resource-request', this._handleResourceRequest.bind(this));
 
             // 向協調器註冊客戶端
-            await this._registerWithCoordinator();
+            const isNewClientId = !localStorage.getItem('p2p_client_registered')
+                || localStorage.getItem('p2p_client_id') !== this.clientId;
+
+            if (isNewClientId) {
+                // 新客戶端，執行完整註冊
+                await this._registerWithCoordinator();
+                localStorage.setItem('p2p_client_registered', 'true');
+                console.log(`[P2P客戶端] 已向協調器註冊新客戶端: ${this.clientId}`);
+            } else {
+                // 現有客戶端，只更新狀態
+                await this._updateClientStatus('ONLINE');
+                console.log(`[P2P客戶端] 使用現有客戶端ID: ${this.clientId}，已更新狀態為在線`);
+            }
 
             this.p2pManager.connect();
 
             // 標記為準備就緒
             this.isReady = true;
+            await this._registerServiceWorker();
 
             // 觸發ready事件
             this._dispatchEvent('ready');
@@ -177,45 +189,12 @@ export class p2p_client {
         }
     }
 
-    // 添加處理隊列的方法
-    async _processNextRequest() {
-        // 先將處理中狀態設為false
-        this.isProcessingQueue = false;
-
-        // 檢查隊列是否有等待處理的請求
-        if (this.resourceRequestQueue.length > 0) {
-            // 取出下一個請求
-            const nextRequest = this.resourceRequestQueue.shift();
-
-            // 非同步處理下一個請求
-            try {
-                console.log(`[P2P客戶端] 開始處理隊列中的請求: ${nextRequest.url}`);
-                const result = await this.getResourceP2POnly(nextRequest.url);
-                nextRequest.resolve(result);
-                console.log(`[P2P客戶端] 成功處理隊列中的請求: ${nextRequest.url}`);
-            } catch (error) {
-                console.error(`[P2P客戶端] 處理隊列中的請求失敗: ${nextRequest.url}`, error);
-                nextRequest.reject(error);
-            }
-        }
-    }
-
     async getResourceP2POnly(url) {
         if (!this.isReady) {
             await this.init();
         }
 
-        // 如果當前有請求正在處理，則將此請求加入隊列
-        if (this.isProcessingQueue) {
-            return new Promise((resolve, reject) => {
-                console.log(`[P2P] 將資源請求加入隊列: ${url}`);
-                this.resourceRequestQueue.push({ url, resolve, reject });
-            });
-        }
-
-        // 設置處理中標記
-        this.isProcessingQueue = true;
-
+        // 移除队列相关代码，直接处理请求
         try {
             // 計算URL哈希作為內容哈希
             const urlHash = await calculateHash(url);
@@ -271,9 +250,6 @@ export class p2p_client {
                             await this._cacheResource(Cacheurl || url, blobData);
                             console.log(`[P2P客戶端] 已緩存轉換後的Blob到IndexedDB: ${Cacheurl || url}`);
 
-                            // 處理下一個請求
-                            this._processNextRequest();
-
                             return blobData;
                         }
 
@@ -284,9 +260,6 @@ export class p2p_client {
                             // 緩存資源到IndexedDB
                             await this._cacheResource(Cacheurl || url, data);
                             console.log(`[P2P客戶端] 已緩存Blob到IndexedDB: ${Cacheurl || url}`);
-
-                            // 處理下一個請求
-                            this._processNextRequest();
 
                             return data;
                         } else {
@@ -305,10 +278,6 @@ export class p2p_client {
             }
         } catch (error) {
             console.error(`獲取資源 ${url} 失敗:`, error);
-
-            // 處理下一個請求（即使當前請求失敗）
-            this._processNextRequest();
-
             throw error;
         }
     }
@@ -354,16 +323,79 @@ export class p2p_client {
             }
         }
     }
+    _getStoredClientId() {
+        try {
+            const storedId = localStorage.getItem('p2p_client_id');
+            const expireTime = localStorage.getItem('p2p_client_id_expire');
 
-    /**
-     * 生成客戶端ID
-     * @returns {string} 生成的客戶端ID
-     * @private
-     */
-    _generateClientId() {
-        return 'client-' + crypto.randomUUID();
+            if (storedId && expireTime) {
+                // 檢查是否過期
+                const now = new Date().getTime();
+                if (now < parseInt(expireTime)) {
+                    console.log(`[P2P客戶端] 使用已存儲的客戶端ID: ${storedId}`);
+                    return storedId;
+                } else {
+                    // 若已過期，清除存儲
+                    localStorage.removeItem('p2p_client_registered')
+                    localStorage.removeItem('p2p_client_id');
+                    localStorage.removeItem('p2p_client_id_expire');
+                    console.log(`[P2P客戶端] 存儲的客戶端ID已過期，已清除`);
+                }
+            }
+        } catch (error) {
+            console.warn(`[P2P客戶端] 獲取存儲的客戶端ID出錯:`, error);
+        }
+        return null;
     }
 
+    _generateClientId() {
+        const newId = 'client-' + crypto.randomUUID();
+
+        // 設置過期時間，例如 7 天後過期
+        const expireTime = new Date().getTime() + (1 * 24 * 60 * 60 * 1000);
+
+        try {
+            localStorage.setItem('p2p_client_id', newId);
+            localStorage.setItem('p2p_client_id_expire', expireTime.toString());
+            console.log(`[P2P客戶端] 生成並保存新的客戶端ID: ${newId}, 過期時間: ${new Date(expireTime).toLocaleString()}`);
+        } catch (error) {
+            console.warn(`[P2P客戶端] 保存客戶端ID出錯:`, error);
+        }
+
+        return newId;
+    }
+
+    async _updateClientStatus(status) {
+        try {
+            // 計算新的過期時間 (例如7天後)
+            const newExpireTime = new Date().getTime() + (1 * 24 * 60 * 60 * 1000);
+
+            // 更新本地存儲的過期時間
+            localStorage.setItem('p2p_client_id_expire', newExpireTime.toString());
+
+            // 向服務器發送更新狀態和過期時間的請求
+            const response = await fetch(`${this.config.coordinatorUrl}/update-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    clientId: this.clientId,
+                    status: status,
+                    expireTime: newExpireTime
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`更新客戶端狀態失敗: ${response.statusText}`);
+            }
+
+            console.log(`客戶端狀態更新為 ${status}，過期時間延長至 ${new Date(newExpireTime).toLocaleString()}`);
+        } catch (error) {
+            console.error('更新客戶端狀態失敗:', error);
+            throw error;
+        }
+    }
     /**
      * 註冊Service Worker
      * @private
@@ -410,12 +442,11 @@ export class p2p_client {
         });
     }
 
-    /**
-     * 向協調器註冊客戶端
-     * @private
-     */
     async _registerWithCoordinator() {
         try {
+            // 獲取過期時間
+            const expireTime = parseInt(localStorage.getItem('p2p_client_id_expire') || '0');
+
             const response = await fetch(`${this.config.coordinatorUrl}/register`, {
                 method: 'POST',
                 headers: {
@@ -425,7 +456,9 @@ export class p2p_client {
                     clientId: this.clientId,
                     latitude: this.geolocation.latitude,
                     longitude: this.geolocation.longitude,
-                    contentHashes: []
+                    contentHashes: [],
+                    expireTime: expireTime,
+                    status: "ONLINE"
                 })
             });
 
