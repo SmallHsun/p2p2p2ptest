@@ -111,7 +111,24 @@ export class p2p_client {
             });
         }
     }
+    _getResourceTypeFromUrl(url) {
+        const extension = url.split('.').pop().toLowerCase();
 
+        const jsExtensions = ['js', 'mjs', 'jsx'];
+        const cssExtensions = ['css', 'scss', 'less'];
+        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'ico'];
+
+        if (jsExtensions.includes(extension)) return 'js';
+        if (cssExtensions.includes(extension)) return 'css';
+        if (imageExtensions.includes(extension)) return 'image';
+
+        // 從路徑進一步判斷
+        if (url.includes('/js/')) return 'js';
+        if (url.includes('/css/')) return 'css';
+        if (url.includes('/images/') || url.includes('/img/')) return 'image';
+
+        return 'other';
+    }
     /**
      * 根據URL確定內容類型
      * @param {string} url - 資源URL
@@ -189,19 +206,105 @@ export class p2p_client {
         }
     }
 
+    // async getResourceP2POnly(url) {
+    //     if (!this.isReady) {
+    //         await this.init();
+    //     }
+    //     try {
+    //         // 計算URL哈希作為內容哈希
+    //         const urlHash = await calculateHash(url);
+    //         console.log(`計算URL哈希: ${urlHash} 用於 ${url}`);
+    //         // 直接嘗試從P2P網絡獲取
+    //         try {
+    //             const peers = await this._findPeersWithContent(urlHash);
+    //             if (!peers || peers.length === 0) {
+    //                 throw new Error('沒有可用的peer來提供此資源');
+    //             }
+    //             console.log(`[P2P客戶端] 找到 ${peers.length} 個具有資源 ${url} 的對等方`);
+    //             // 按距離排序嘗試從對等方獲取資源
+    //             for (const peer of peers) {
+    //                 try {
+    //                     await this.p2pManager.ensureConnected(peer.clientId);
+    //                     console.log(`已與對等方 ${peer.clientId} 建立連接，開始請求資源 ${url}`);
+
+    //                     const responseData = await this.p2pManager.requestResource(peer.clientId, url);
+    //                     console.log(`從對等方 ${peer.clientId} 獲取資源成功: ${url}`, responseData);
+
+    //                     const { data, Cacheurl } = responseData;
+
+    //                     // 檢查數據類型
+    //                     if (!(data instanceof Blob)) {
+    //                         console.warn(`接收到的數據不是Blob: ${typeof data}`);
+
+    //                         // 嘗試將非Blob數據轉換為Blob
+    //                         let contentType = this._getContentTypeFromUrl(url);
+    //                         let blobData;
+
+    //                         if (typeof data === 'string') {
+    //                             // 字符串轉為Blob
+    //                             blobData = new Blob([data], { type: contentType });
+    //                             console.log(`[P2P客戶端] 從字符串轉換為Blob: 大小=${blobData.size}字節`);
+    //                         } else if (data && typeof data === 'object') {
+    //                             // 嘗試將對象轉換為字符串，再轉為Blob
+    //                             try {
+    //                                 const jsonString = JSON.stringify(data);
+    //                                 blobData = new Blob([jsonString], { type: contentType });
+    //                                 console.log(`[P2P客戶端] 從對象轉換為Blob: 大小=${blobData.size}字節`);
+    //                             } catch (e) {
+    //                                 console.error('無法將對象轉換為JSON字符串:', e);
+    //                                 throw new Error('數據格式錯誤');
+    //                             }
+    //                         } else {
+    //                             throw new Error('不支持的數據類型');
+    //                         }
+
+    //                         // 緩存資源到IndexedDB
+    //                         await this._cacheResource(Cacheurl || url, blobData);
+    //                         console.log(`[P2P客戶端] 已緩存轉換後的Blob到IndexedDB: ${Cacheurl || url}`);
+
+    //                         return blobData;
+    //                     }
+
+    //                     // 驗證URL哈希
+    //                     const receivedHash = await calculateHash(Cacheurl || url);
+    //                     if (receivedHash === urlHash) {
+    //                         console.log(`[P2P客戶端] 收到的資源哈希 ${receivedHash} 與請求哈希 ${urlHash} 匹配`);
+    //                         // 緩存資源到IndexedDB
+    //                         await this._cacheResource(Cacheurl || url, data);
+    //                         console.log(`[P2P客戶端] 已緩存Blob到IndexedDB: ${Cacheurl || url}`);
+
+    //                         return data;
+    //                     } else {
+    //                         console.warn(`從對等方 ${peer.clientId} 獲取的資源哈希不匹配: 預期=${urlHash}, 實際=${receivedHash}`);
+    //                     }
+    //                 } catch (peerError) {
+    //                     console.warn(`從對等方 ${peer.clientId} 獲取資源 ${url} 失敗:`, peerError);
+    //                     // 繼續嘗試下一個對等方
+    //                 }
+    //             }
+
+    //             throw new Error('嘗試所有對等方後仍無法獲取資源');
+    //         } catch (p2pError) {
+    //             console.warn('尋找擁有內容的對等方失敗:', p2pError);
+    //             throw new Error('無可用的P2P資源');
+    //         }
+    //     } catch (error) {
+    //         console.error(`獲取資源 ${url} 失敗:`, error);
+    //         throw error;
+    //     }
+    // }
     async getResourceP2POnly(url) {
         if (!this.isReady) {
             await this.init();
         }
 
-        // 移除队列相关代码，直接处理请求
         try {
             // 計算URL哈希作為內容哈希
             const urlHash = await calculateHash(url);
             console.log(`計算URL哈希: ${urlHash} 用於 ${url}`);
 
-            // 直接嘗試從P2P網絡獲取
             try {
+                // 查找擁有此資源的節點
                 const peers = await this._findPeersWithContent(urlHash);
                 if (!peers || peers.length === 0) {
                     throw new Error('沒有可用的peer來提供此資源');
@@ -209,71 +312,153 @@ export class p2p_client {
 
                 console.log(`[P2P客戶端] 找到 ${peers.length} 個具有資源 ${url} 的對等方`);
 
-                // 按距離排序嘗試從對等方獲取資源
-                for (const peer of peers) {
-                    try {
-                        await this.p2pManager.ensureConnected(peer.clientId);
-                        console.log(`已與對等方 ${peer.clientId} 建立連接，開始請求資源 ${url}`);
+                // 對節點進行排序 (按距離或其他指標)
+                const sortedPeers = [...peers].sort((a, b) => {
+                    return (a.distance || 0) - (b.distance || 0);
+                });
 
-                        const responseData = await this.p2pManager.requestResource(peer.clientId, url);
-                        console.log(`從對等方 ${peer.clientId} 獲取資源成功: ${url}`, responseData);
+                // 判斷資源類型
+                const resourceType = this._getResourceTypeFromUrl(url);
+                console.log(`[P2P客戶端] 資源 ${url} 類型為: ${resourceType}`);
 
-                        const { data, Cacheurl } = responseData;
+                // 選擇合適的節點
+                let selectedPeer;
 
-                        // 檢查數據類型
-                        if (!(data instanceof Blob)) {
-                            console.warn(`接收到的數據不是Blob: ${typeof data}`);
+                if (resourceType === 'js' || resourceType === 'css') {
+                    // JS/CSS 使用第一順位節點
+                    selectedPeer = sortedPeers[0];
+                    console.log(`[P2P客戶端] JS/CSS資源使用第一順位節點: ${selectedPeer.clientId}`);
+                }
+                else if (resourceType === 'image') {
+                    // 圖片資源 - 使用圖片URL的哈希來選擇節點，實現分散效果
+                    const imageHash = await calculateHash(url);
+                    const hashNumber = parseInt(imageHash.substring(0, 8), 16);
+                    const peerIndex = hashNumber % sortedPeers.length;
+                    selectedPeer = sortedPeers[peerIndex];
 
-                            // 嘗試將非Blob數據轉換為Blob
-                            let contentType = this._getContentTypeFromUrl(url);
-                            let blobData;
-
-                            if (typeof data === 'string') {
-                                // 字符串轉為Blob
-                                blobData = new Blob([data], { type: contentType });
-                                console.log(`[P2P客戶端] 從字符串轉換為Blob: 大小=${blobData.size}字節`);
-                            } else if (data && typeof data === 'object') {
-                                // 嘗試將對象轉換為字符串，再轉為Blob
-                                try {
-                                    const jsonString = JSON.stringify(data);
-                                    blobData = new Blob([jsonString], { type: contentType });
-                                    console.log(`[P2P客戶端] 從對象轉換為Blob: 大小=${blobData.size}字節`);
-                                } catch (e) {
-                                    console.error('無法將對象轉換為JSON字符串:', e);
-                                    throw new Error('數據格式錯誤');
-                                }
-                            } else {
-                                throw new Error('不支持的數據類型');
-                            }
-
-                            // 緩存資源到IndexedDB
-                            await this._cacheResource(Cacheurl || url, blobData);
-                            console.log(`[P2P客戶端] 已緩存轉換後的Blob到IndexedDB: ${Cacheurl || url}`);
-
-                            return blobData;
-                        }
-
-                        // 驗證URL哈希
-                        const receivedHash = await calculateHash(Cacheurl || url);
-                        if (receivedHash === urlHash) {
-                            console.log(`[P2P客戶端] 收到的資源哈希 ${receivedHash} 與請求哈希 ${urlHash} 匹配`);
-                            // 緩存資源到IndexedDB
-                            await this._cacheResource(Cacheurl || url, data);
-                            console.log(`[P2P客戶端] 已緩存Blob到IndexedDB: ${Cacheurl || url}`);
-
-                            return data;
-                        } else {
-                            console.warn(`從對等方 ${peer.clientId} 獲取的資源哈希不匹配: 預期=${urlHash}, 實際=${receivedHash}`);
-                        }
-                    } catch (peerError) {
-                        console.warn(`從對等方 ${peer.clientId} 獲取資源 ${url} 失敗:`, peerError);
-                        // 繼續嘗試下一個對等方
-                    }
+                    console.log(`[P2P客戶端] 圖片資源使用分散式節點: ${selectedPeer.clientId} (索引: ${peerIndex}/${sortedPeers.length - 1})`);
+                }
+                else {
+                    // 其他資源類型使用第一順位節點
+                    selectedPeer = sortedPeers[0];
+                    console.log(`[P2P客戶端] 其他資源類型使用第一順位節點: ${selectedPeer.clientId}`);
                 }
 
-                throw new Error('嘗試所有對等方後仍無法獲取資源');
+                // 從選定的節點獲取資源
+                try {
+                    // 確保連接建立
+                    await this.p2pManager.ensureConnected(selectedPeer.clientId);
+                    console.log(`已與節點 ${selectedPeer.clientId} 建立連接，開始請求資源 ${url}`);
+
+                    // 請求資源
+                    const responseData = await this.p2pManager.requestResource(selectedPeer.clientId, url);
+                    console.log(`從節點 ${selectedPeer.clientId} 獲取資源成功: ${url}`);
+
+                    const { data, Cacheurl } = responseData;
+
+                    // 檢查數據類型
+                    if (!(data instanceof Blob)) {
+                        console.warn(`接收到的數據不是Blob: ${typeof data}`);
+
+                        // 嘗試將非Blob數據轉換為Blob
+                        let contentType = this._getContentTypeFromUrl(url);
+                        let blobData;
+
+                        if (typeof data === 'string') {
+                            // 字符串轉為Blob
+                            blobData = new Blob([data], { type: contentType });
+                            console.log(`[P2P客戶端] 從字符串轉換為Blob: 大小=${blobData.size}字節`);
+                        } else if (data && typeof data === 'object') {
+                            // 嘗試將對象轉換為字符串，再轉為Blob
+                            try {
+                                const jsonString = JSON.stringify(data);
+                                blobData = new Blob([jsonString], { type: contentType });
+                                console.log(`[P2P客戶端] 從對象轉換為Blob: 大小=${blobData.size}字節`);
+                            } catch (e) {
+                                console.error('無法將對象轉換為JSON字符串:', e);
+                                throw new Error('數據格式錯誤');
+                            }
+                        } else {
+                            throw new Error('不支持的數據類型');
+                        }
+
+                        // 緩存資源到IndexedDB
+                        await this._cacheResource(Cacheurl || url, blobData);
+                        console.log(`[P2P客戶端] 已緩存轉換後的Blob到IndexedDB: ${Cacheurl || url}`);
+
+                        return blobData;
+                    }
+
+                    // 驗證URL哈希
+                    const receivedHash = await calculateHash(Cacheurl || url);
+                    if (receivedHash === urlHash) {
+                        console.log(`[P2P客戶端] 收到的資源哈希 ${receivedHash} 與請求哈希 ${urlHash} 匹配`);
+                        // 緩存資源到IndexedDB
+                        await this._cacheResource(Cacheurl || url, data);
+                        console.log(`[P2P客戶端] 已緩存Blob到IndexedDB: ${Cacheurl || url}`);
+
+                        return data;
+                    } else {
+                        console.warn(`從節點 ${selectedPeer.clientId} 獲取的資源哈希不匹配: 預期=${urlHash}, 實際=${receivedHash}`);
+                        throw new Error('資源哈希不匹配');
+                    }
+                } catch (selectedPeerError) {
+                    console.warn(`從選定節點 ${selectedPeer.clientId} 獲取資源失敗:`, selectedPeerError);
+
+                    // 嘗試其他節點作為備用
+                    for (const peer of sortedPeers) {
+                        // 跳過已嘗試的選定節點
+                        if (peer.clientId === selectedPeer.clientId) continue;
+
+                        try {
+                            await this.p2pManager.ensureConnected(peer.clientId);
+                            console.log(`嘗試從備用節點 ${peer.clientId} 獲取資源 ${url}`);
+
+                            const responseData = await this.p2pManager.requestResource(peer.clientId, url);
+                            console.log(`從備用節點 ${peer.clientId} 獲取資源成功: ${url}`);
+
+                            const { data, Cacheurl } = responseData;
+
+                            // 檢查數據類型 (與上面相同的處理邏輯)
+                            if (!(data instanceof Blob)) {
+                                // 與上面相同的非Blob處理邏輯...
+                                let contentType = this._getContentTypeFromUrl(url);
+                                let blobData;
+
+                                if (typeof data === 'string') {
+                                    blobData = new Blob([data], { type: contentType });
+                                } else if (data && typeof data === 'object') {
+                                    try {
+                                        const jsonString = JSON.stringify(data);
+                                        blobData = new Blob([jsonString], { type: contentType });
+                                    } catch (e) {
+                                        throw new Error('數據格式錯誤');
+                                    }
+                                } else {
+                                    throw new Error('不支持的數據類型');
+                                }
+
+                                await this._cacheResource(Cacheurl || url, blobData);
+                                return blobData;
+                            }
+
+                            // 驗證URL哈希
+                            const receivedHash = await calculateHash(Cacheurl || url);
+                            if (receivedHash === urlHash) {
+                                await this._cacheResource(Cacheurl || url, data);
+                                return data;
+                            }
+                        } catch (backupError) {
+                            console.warn(`從備用節點 ${peer.clientId} 獲取資源失敗:`, backupError);
+                            // 繼續嘗試下一個節點
+                        }
+                    }
+
+                    // 所有節點都嘗試失敗
+                    throw new Error('嘗試所有節點後仍無法獲取資源');
+                }
             } catch (p2pError) {
-                console.warn('尋找擁有內容的對等方失敗:', p2pError);
+                console.warn('P2P獲取資源失敗:', p2pError);
                 throw new Error('無可用的P2P資源');
             }
         } catch (error) {
@@ -281,7 +466,6 @@ export class p2p_client {
             throw error;
         }
     }
-
 
     /**
      * 添加事件監聽器
