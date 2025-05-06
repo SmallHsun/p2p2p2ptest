@@ -2,7 +2,7 @@
   <div class="product-gallery">
     <h1>電商產品展示</h1>
 
-    <div class="product-grid">
+    <!-- <div class="product-grid">
       <div v-for="(product, index) in products" :key="index" class="product-card">
         <div class="product-image-container">
           <img :src="product.imageUrl" :alt="product.name" />
@@ -14,7 +14,7 @@
           <button class="add-to-cart-btn">加入購物車</button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div v-if="products.length === 0" class="no-products">
       <p>暫無產品</p>
@@ -24,7 +24,27 @@
       <h3>本地資源圖片</h3>
       <div class="image-examples">
         <div class="example-image">
-          <img :src="getImageUrl(2)" alt="本地圖片1" />
+          <img :src="getImageUrl(566)" alt="本地圖片1" />
+          <p>本地圖片 1</p>
+        </div>
+        <div class="example-image">
+          <img :src="getImageUrl(6)" alt="本地圖片1" />
+          <p>本地圖片 1</p>
+        </div>
+        <div class="example-image">
+          <img :src="getImageUrl(11)" alt="本地圖片1" />
+          <p>本地圖片 1</p>
+        </div>
+        <div class="example-image">
+          <img :src="getImageUrl(32)" alt="本地圖片1" />
+          <p>本地圖片 1</p>
+        </div>
+        <div class="example-image">
+          <img :src="getImageUrl(148)" alt="本地圖片1" />
+          <p>本地圖片 1</p>
+        </div>
+        <div class="example-image">
+          <img :src="getImageUrl(175)" alt="本地圖片1" />
           <p>本地圖片 1</p>
         </div>
       </div>
@@ -75,37 +95,16 @@ const products = ref([
     description: '360度環繞音效，防水設計，支持語音助手',
     price: 3200,
     imageUrl: 'https://picsum.photos/id/3/800/600'
-  },
-  {
-    id: 6,
-    name: '數位相機',
-    description: '2400萬像素，專業級拍攝效果，4K視頻錄製',
-    price: 28500,
-    imageUrl: 'https://picsum.photos/id/250/800/600'
-  },
-  {
-    id: 7,
-    name: '平板電腦',
-    description: '10.9吋視網膜顯示屏，A14晶片，支持Apple Pencil',
-    price: 14900,
-    imageUrl: 'https://picsum.photos/id/365/800/600'
-  },
-  {
-    id: 8,
-    name: '遊戲手柄',
-    description: '可自定義按鍵，人體工學設計，有線/無線雙模式',
-    price: 1890,
-    imageUrl: 'https://picsum.photos/id/96/800/600'
   }
 ]);
 const getImageUrl = (fileIndex) => {
   return new URL(
-    `../assets/${fileIndex}.jpg`,
+    `../assets/${fileIndex}.png`,
     import.meta.url
   ).href;
 };
 
-在組件載入時初始化P2P客戶端
+// 在組件載入時初始化P2P客戶端
 onMounted(async () => {
   // 如果p2pStore尚未初始化，則進行初始化
   if (!p2pStore.isInitialized) {

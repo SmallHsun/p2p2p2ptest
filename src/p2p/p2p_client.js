@@ -62,7 +62,7 @@ export class p2p_client {
                     try {
                         const url = event.data.requestToCache;
                         const urlHash = event.data.urlHash;
-                        console.log(`[p2p_client] 收到 SW 通知：擁有快取資源: ${url}, 哈希: ${urlHash}`);
+                        // console.log(`[p2p_client] 收到 SW 通知：擁有快取資源: ${url}, 哈希: ${urlHash}`);
 
                         // 確保客戶端已初始化
                         if (!this.isReady) {
@@ -87,7 +87,7 @@ export class p2p_client {
                             // 發送確認回應
                             if (event.ports && event.ports[0]) {
                                 event.ports[0].postMessage({ status: 'ack' });
-                                console.log(`[p2p_client] 已回覆 SW 資源通知確認: ${url}`);
+                                // console.log(`[p2p_client] 已回覆 SW 資源通知確認: ${url}`);
                             }
                         } else {
                             console.warn(`[p2p_client] 在IndexedDB中找不到資源: ${url}`);

@@ -18,7 +18,7 @@ app.use(router);
 // 掛載應用
 app.mount('#app');
 
-延遲初始化P2P客戶端，確保DOM已載入
+// 延遲初始化P2P客戶端，確保DOM已載入
 window.addEventListener('load', async () => {
     // 初始化P2P客戶端
     const p2pStore = useP2PStore();
