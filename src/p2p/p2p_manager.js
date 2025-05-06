@@ -53,13 +53,136 @@ export class P2PManager {
             checkThreshold: 256 * 1024,  // 檢查緩衝區的閾值降至256KB
             lowThreshold: 64 * 1024,     // 等待緩衝區降至64KB才繼續
             chunkSize: 64 * 1024,        // 分片大小設為64KB
-            largeFileThreshold: 100 * 1024 // 大於100KB的文件使用分片
+            largeFileThreshold: 250 * 1024 // 大於100KB的文件使用分片
         };
 
         // 初始化消息處理器系統
         this._initializeMessageHandlers();
     }
 
+
+    // 在p2p_manager.js中添加，放在constructor後面
+    calculateNodeLoad() {
+        // 針對小檔案傳輸優化的權重設置
+        const weights = {
+            connection: 1.0,     // 連接基礎開銷
+            activeTransfer: 2.0, // 傳輸的主要影響
+            dataBuffer: 0.3      // 小檔案情境下緩衝區權重降低
+        };
+
+        // 計算連接負載 - 當前活躍連接數
+        let connectionCount = 0;
+        this.peerConnections.forEach((peerInfo) => {
+            if (peerInfo.dataChannel && peerInfo.dataChannel.readyState === 'open') {
+                connectionCount++;
+            }
+        });
+
+        // 計算活躍傳輸數 - 當前正在傳輸的請求數
+        const activeTransfers = this.globalTransferState.currentTransfers.size;
+
+        // 計算數據緩衝區總量 - 所有連接的緩衝區大小總和
+        let totalBuffered = 0;
+        this.peerConnections.forEach((peerInfo) => {
+            if (peerInfo.dataChannel) {
+                totalBuffered += peerInfo.dataChannel.bufferedAmount;
+            }
+        });
+
+        // 小檔案系統適用的標準化方式
+        const maxBufferSize = 15 * 1024 * 1024; // 提高閾值至15MB
+        const normalizedBuffer = Math.min(totalBuffered / maxBufferSize, 1.0);
+
+        // 計算加權總負載
+        const totalLoad = (connectionCount * weights.connection) +
+            (activeTransfers * weights.activeTransfer) +
+            (normalizedBuffer * weights.dataBuffer);
+
+        // 對於小檔案系統的合適閾值 (由於已降低緩衝區權重)
+        const loadThreshold = 9.0;
+
+        return {
+            raw: {
+                connections: connectionCount,
+                activeTransfers: activeTransfers,
+                bufferedAmount: totalBuffered
+            },
+            score: totalLoad,
+            isOverloaded: totalLoad > loadThreshold ||
+                connectionCount >= 12 || // 適當提高連接閾值
+                activeTransfers >= 5,
+            loadThreshold: loadThreshold,
+            weights: weights
+        };
+    }
+
+    // 根據資源類型和目前負載狀況判斷是否接受請求
+    canAcceptResourceRequest(resourceUrl, peerId) {
+        // 計算當前負載
+        const load = this.calculateNodeLoad();
+        // 如果負載未超過閾值，直接接受
+        if (!load.isOverloaded) {
+            return {
+                accept: true,
+                loadScore: load.score,
+                reason: "負載正常"
+            };
+        }
+
+        // 判斷資源類型優先級
+        const resourceType = this._getResourceTypeFromUrl(resourceUrl);
+
+        // 資源優先級（可以自定義不同類型資源的優先級）
+        const resourcePriorities = {
+            js: 10,    // JavaScript最高優先級
+            css: 8,    // CSS次高優先級
+            html: 6,   // HTML中等優先級
+            image: 4,  // 圖片較低優先級
+            other: 2   // 其他資源最低優先級
+        };
+
+        const priority = resourcePriorities[resourceType] || resourcePriorities.other;
+
+        // 高優先級資源（如JS/CSS）即使在高負載下也可能接受
+        if (priority >= 8 && load.score < load.loadThreshold * 1.2) {
+            return {
+                accept: true,
+                loadScore: load.score,
+                reason: `高優先級資源(${priority})，即使在較高負載下也接受`
+            };
+        }
+
+        // 如果請求來自已經建立連接的對等方，可能降低拒絕門檻
+        const existingPeer = this.peerConnections.has(peerId);
+        if (existingPeer && load.score < load.loadThreshold * 1.1) {
+            return {
+                accept: true,
+                loadScore: load.score,
+                reason: "來自已連接對等方的請求，在輕微超載情況下也接受"
+            };
+        }
+
+        // 拒絕請求
+        return {
+            accept: false,
+            loadScore: load.score,
+            reason: `節點負載過高(${load.score.toFixed(2)}/${load.loadThreshold})，拒絕處理優先級為${priority}的資源請求`,
+            loadInfo: load.raw
+        };
+    }
+
+    // 獲取當前活躍連接數
+    getActiveConnectionsCount() {
+        let activeCount = 0;
+
+        this.peerConnections.forEach((peerInfo) => {
+            if (peerInfo.dataChannel && peerInfo.dataChannel.readyState === 'open') {
+                activeCount++;
+            }
+        });
+
+        return activeCount;
+    }
     //==========================
     // 基本初始化與連接管理
     //==========================
@@ -286,11 +409,11 @@ export class P2PManager {
 
                 console.log(`[P2P請求] 步驟2: 數據通道狀態檢查通過，狀態為: ${peerInfo.dataChannel.readyState}`);
 
-                // 設置請求超時 (60秒)
+                // 設置請求超時 (3秒)
                 const timeout = setTimeout(() => {
                     console.error(`[P2P請求] 錯誤: 向 ${peerId} 請求資源 ${url} 超時`);
-                    this._cleanupRequest(requestId, new Error('請求資源超時(60秒)'));
-                }, 60000);
+                    this._cleanupRequest(requestId, new Error('請求資源超時(3秒)'));
+                }, 3000);
 
                 // 獲取並存儲資源的預期內容類型
                 const expectedContentType = this._getContentTypeFromUrl(url);
@@ -483,7 +606,7 @@ export class P2PManager {
                         console.error(`[P2P請求] 等待Blob數據超時 (請求ID: ${requestId})`);
                         this._cleanupRequest(requestId, new Error('接收Blob數據超時'));
                     }
-                }, 10000);
+                }, 3000);
             }
 
             // 返回 true 表示這是一次性處理器，處理完就可以移除了
@@ -854,7 +977,7 @@ export class P2PManager {
                 dataChannel.removeEventListener('bufferedamountlow', handleBufferLow);
                 console.warn(`[P2P改進] 等待緩衝區減小超時，當前: ${dataChannel.bufferedAmount}字節`);
                 resolve(); // 即使超時也繼續，但可能會導致傳輸問題
-            }, 5000);
+            }, 2000);
         });
     }
 
@@ -1167,7 +1290,7 @@ export class P2PManager {
             const timeout = setTimeout(() => {
                 console.error(`[P2P傳輸] 等待元數據確認超時: ${requestId}`);
                 reject(new Error('等待元數據確認超時'));
-            }, 10000);
+            }, 3000);
 
             const handler = (fromPeerId, ackData) => {
                 if (fromPeerId === peerId && ackData.requestId === requestId) {
@@ -1189,7 +1312,7 @@ export class P2PManager {
             const timeout = setTimeout(() => {
                 console.warn(`[P2P傳輸] 等待Blob接收確認超時: ${requestId}`);
                 resolve(false); // 超時但不拒絕Promise
-            }, 15000);
+            }, 3000);
 
             const handler = (fromPeerId, receiveData) => {
                 if (fromPeerId === peerId && receiveData.requestId === requestId) {
@@ -1260,7 +1383,18 @@ export class P2PManager {
                     // 處理錯誤響應
                     if (data.error) {
                         console.error(`[P2P消息] 收到錯誤響應: ${data.error}`);
-                        this._cleanupRequest(requestId, new Error(data.error));
+
+                        // 檢查是否是因為負載過高而拒絕的請求
+                        if (data.status === 'overloaded' && data.shouldTryNextPeer) {
+                            request.resolve({
+                                status: 'overloaded',
+                                loadScore: data.loadScore || 0,
+                                reason: data.reason || '節點負載過高',
+                                shouldTryNextPeer: true
+                            });
+                        } else {
+                            this._cleanupRequest(requestId, new Error(data.error));
+                        }
                         return;
                     }
 
@@ -1418,20 +1552,8 @@ export class P2PManager {
 
                 // 如果已經在處理交涉或處於非穩定狀態，先重置連接
                 if (peerConnection.signalingState !== 'stable') {
-                    console.log(`[P2P信令] 連接不在穩定狀態，嘗試重置連接`);
-                    try {
-                        // 嘗試回到穩定狀態
-                        await peerConnection.setLocalDescription({ type: "rollback" });
-                        console.log(`[P2P信令] 成功回滾到穩定狀態`);
-                    } catch (rollbackError) {
-                        console.warn(`[P2P信令] 回滾連接失敗:`, rollbackError);
-
-                        // 如果回滾失敗，建立新連接
-                        console.log(`[P2P信令] 創建新的連接替代現有連接`);
-                        peerConnection = this._createPeerConnection(data.sender);
-                        // _createPeerConnection 會自動將新連接存入 Map
-                        peerInfo = this.peerConnections.get(data.sender);
-                    }
+                    peerConnection = this._createPeerConnection(data.sender);
+                    peerInfo = this.peerConnections.get(data.sender);
                 }
             }
 
@@ -1525,7 +1647,7 @@ export class P2PManager {
                     return new Promise((resolve, reject) => {
                         const timeout = setTimeout(() => {
                             reject(new Error('等待數據通道打開超時'));
-                        }, 10000);
+                        }, 3000);
 
                         const checkState = () => {
                             if (existingPeerInfo.dataChannel.readyState === 'open') {
@@ -1586,7 +1708,7 @@ export class P2PManager {
                 const timeout = setTimeout(() => {
                     console.error(`[P2P連接] 連接到 ${peerId} 超時`);
                     reject(new Error('連接超時'));
-                }, 30000);
+                }, 3000);
 
                 // 創建並發送offer
                 peerConnection.createOffer()
@@ -1701,7 +1823,7 @@ export class P2PManager {
         try {
             const dataChannel = peerConnection.createDataChannel('dataChannel', {
                 ordered: true,            // 保證順序
-                maxRetransmits: 3         // 最大重試次數
+                maxRetransmits: 1         // 最大重試次數
             });
 
             // 設置緩衝區閾值

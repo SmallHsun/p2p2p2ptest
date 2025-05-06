@@ -47,6 +47,14 @@
           <img :src="getImageUrl(175)" alt="本地圖片1" />
           <p>本地圖片 1</p>
         </div>
+        <div class="example-image">
+          <img :src="getImageUrl(833)" alt="本地圖片1" />
+          <p>本地圖片 1</p>
+        </div>
+        <div class="example-image">
+          <img :src="getImageUrl(2)" alt="本地圖片1" />
+          <p>本地圖片 1</p>
+        </div>
       </div>
     </div>
   </div>
