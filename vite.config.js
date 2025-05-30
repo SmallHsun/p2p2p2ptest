@@ -12,7 +12,6 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    open: true,
     // 配置CORS以允许Service Worker正常工作
     cors: true
   },

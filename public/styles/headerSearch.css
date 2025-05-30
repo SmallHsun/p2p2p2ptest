@@ -1,0 +1,702 @@
+@charset "UTF-8";
+html, body {margin:0px; padding:0px;}
+.headcontent div {display:inline-block; vertical-align:top;}
+.headcontent a {display:inline-block; cursor:pointer; text-decoration:none}
+.headcontent img {vertical-align: top}
+.headcontent ul {list-style:none; font-size:0px; margin:0px; padding: 0px}
+.headcontent p, span {padding:0px; margin:0px}
+.headcontent input:focus {outline: none}
+.headcontent button {cursor:pointer}
+.headcontent .TabContent .TabContentD {display:none}
+.headcontent .TabContent .selected {display: block;}
+.headcontent .contentinner {display:block; margin:0px auto 0px auto; padding:0px 0px 0px 0px; width:1220px; font-size: 0px;}
+
+.backgroundContent div {vertical-align:top;}
+.backgroundContent a {display:inline-block; cursor:pointer; text-decoration:none}
+.backgroundContent img {vertical-align: top}
+.backgroundContent ul {list-style:none; font-size:0px; margin:0px; padding: 0px}
+.backgroundContent p, span {padding:0px; margin:0px}
+.backgroundContent input:focus {outline: none}
+.backgroundContent button {cursor:pointer}
+.backgroundContent .TabContent .TabContentD {display:none}
+.backgroundContent .TabContent .selected {display: block;}
+.backgroundContent .contentinner {display:block; margin:0px auto 0px auto; padding:0px 0px 0px 0px; width:1220px; font-size: 0px;}
+
+/*header*/
+.headcontent {display:inline-block; margin:0px; padding:40px 0px 0px 0px; width: 100%; box-sizing: border-box; }
+.headcontent .headcontentinner01 {display:inline-block; margin:0px; padding:0px; background:#ececec; width: 100%; box-sizing: border-box; position: fixed; top: 0px; left: 0px ; z-index: 5 }
+.headcontent .headcontentinner02 {display:inline-block; margin:0px; padding:0px; width: 100%; box-sizing: border-box; width: 100%; background:no-repeat center top/ auto 100%}
+.headcontent .headcontentinner02 .headcontent-2 {display:block; margin:0px auto; padding:0px 0px 0px 0px; width: 1220px; font-size: 0px}
+/* 搜尋框 */
+.headcontent #bt_0_layout_b250 {display:inline-block; margin:0px; padding:0px; background:#ececec; width: 100%; box-sizing: border-box; position: fixed; top: 0px; left: 0px ; z-index: 2; height: auto; border: 0px;}
+.headcontent .headcontentinner02 .headcontent-2 .searchbox {width: 510px;display:inline-block; margin:0px; padding:40px 0px 12px 70px }
+.headcontent .headcontentinner02 .headcontent-2 .searchbox .searchbar{padding: 0px 0px 8px 0px; font-size:0px;display: flex;}
+.headcontent .headcontentinner02 .headcontent-2 .searchbox .searchbar input {flex: 1 0 236px; height:32px; padding:0px 5px 0 15px; box-sizing:border-box; font-family: var(--primary-font-family); vertical-align: top; border: none;border-top-left-radius:100px; border-bottom-left-radius:100px;font-size: 15px;caret-color: #027BFF;width: auto;color: #454545;}
+.headcontent .headcontentinner02 .headcontent-2 .searchbox .searchbar input::placeholder {color: #888888;font-size: 15px;}
+.headcontent .headcontentinner02 .headcontent-2 .searchbox .searchbar input::-moz-placeholder {color: #888888; opacity: 1;font-size: 15px;}
+.headcontent .headcontentinner02 .headcontent-2 .searchbox .searchbar button {margin: 0px; padding: 0px; flex: 0 0 90px; border:0px; background:#454545; font:bold 15px/36px var(--primary-font-family); color:#ffffff; border-top-right-radius: 100px; border-bottom-right-radius: 100px; box-sizing: border-box; height: 36px}
+.headcontent .headcontentinner02 .headcontent-2 .searchbox .searchbar button:focus {outline: none}
+.selectedtop #topSchFrm {display:inline-block;}
+.selectedtop #topSchFrm .searchbar {padding:0px; margin:0px;}
+.selectedtop #topSchFrm .searchbar input#keyword {border: 0px; flex: 1 1 205px; height: 28px; padding: 0px 0px 0px 15px; box-sizing: border-box; font-size: 15px; line-height: 28px; vertical-align: top; border-top-left-radius: 100px; border-bottom-left-radius: 100px; margin: 6px 0px; background: #ffffff;font-family: var(--primary-font-family);color: #454545;}
+.selectedtop #topSchFrm .searchbar button.inputbtn {margin: 6px 0px; padding: 0px; flex: 0 0 70px; border: 0px; background: #A0A0A0; font-size: 15px; font-weight: bold; line-height: 28px; color: #ffffff; border-top-right-radius: 100px; border-bottom-right-radius: 100px; box-sizing: border-box; vertical-align: top; height: 28px;font-family: var(--primary-font-family);}
+.headcontent .searchbox #topSchFrm{ display:initial;}  
+.headcontent .headcontentinner02 .headcontent-2 .searchbox.selectedtop {padding: 0px; display: block; margin: 0px 0px 0px 120px; position: fixed; z-index: 5; top: 0px; width: 420px; left: auto;font-size:0px;}
+.headcontent .headcontentinner02 .headcontent-2 .searchbox.selectedtop #bt_0_layout_b344 {display: none;}
+.searchbox .search-area {border:2px solid #454545;border-top-left-radius:100px; border-bottom-left-radius:100px;box-sizing: border-box;display: flex;flex: 0 0 350px;}
+.searchbox.selectedtop .search-area {border: 0;flex: 0 0 315px;}
+.searchbox .change-search {width: 100px;height: 32px;border: none;margin-right: 10px;font-size: 15px;color: #888888;}
+.searchbox .change-search:focus-visible {outline: 0;}
+.ui-menu.ui-widget.ui-widget-content {width: 438px;border: 1px solid #515151;background: #ffffff;}
+.searchbox .dropdown {font-size: 15px;line-height: 20px;color: #888888;display: inline-block;position: relative;font-family: var(--primary-font-family);flex: 0 0 110px;}
+.searchbox .dropdown.hide {display: none;}
+.searchbox.selectedtop .dropdown {margin: 6px 0px;}
+.searchbox .btn-secondary {padding: 6px 30px 6px 5px;background-color: #ffffff;color: #888888;position: relative;}
+.searchbox .btn-secondary::after {width: 20px;height: 20px;background-image: url(/ecm/img/cmm/chevron-small-down.svg);background-repeat: no-repeat;background-size: cover;position: absolute;right: 10px;top: 6px;display: block;content: "";}
+.searchbox.selectedtop .btn-secondary::after {top: 4px;}
+.searchbox .btn-secondary.icon-rotate::after {transform: rotate(180deg);}
+.searchbox.selectedtop .btn-secondary {padding: 4px 30px 4px 5px;}
+.searchbox .dropdown-menu {position: absolute;border-radius: 4px;background-color: #ffffff;box-shadow: 3px 3px 10px #0000001A;border: 1px solid #EDEDED;z-index: 900;top: 32px;right: 0;}
+.searchbox.selectedtop .dropdown-menu {top: 28px;}
+.searchbox .dropdown-item {font-size: 15px;padding: 12px 12px 12px 34px;white-space: nowrap;color: #454545;display: block;transition: all ease 0.3s;display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;}
+.searchbox .dropdown-item::after {content: attr(data-text); content: attr(data-text) / ""; height: 0; visibility: hidden; overflow: hidden; user-select: none; pointer-events: none; font-weight: bold;}
+.searchbox .dropdown-item.select {color: #454545;font-weight: bold;background-image: url(/ecm/img/cmm/check.svg);background-position: 6px 10px;background-repeat: no-repeat;background-size: 24px 24px;}
+.searchbox .dropdown-item:hover,
+.searchbox .dropdown-item.select:hover {background-color: #FAFAFA;color: #D62872;font-weight: bold;}
+.searchbox .dropdown-menu.hide {display: none;}
+
+/*置頂bar*/
+#bt_0_150_01 {display:block; margin:0px auto; padding:0px; width: 1220px; text-align: center; height:40px;}
+#bt_0_150_01 ul {margin:0px ;padding: 0px}
+#bt_0_150_01 ul li {margin:0px; padding:0px 10px; font:normal 13px/40px var(--primary-font-family); position: relative; cursor: pointer; float: left}
+#bt_0_150_01 ul li:hover a {color: #d62872}
+#bt_0_150_01 ul li:before {content:''; display:inline-block; margin:0px; padding:0px; height:7px; width: 1px; background: #000000; position: absolute; top:calc((100% - 7px) / 2); left:0px; }
+#bt_0_150_01 ul li:first-child:before, #bt_0_150_01 ul li:nth-child(2):before{display: none}
+#bt_0_150_01 ul li a {display:inline-block;margin:0px; padding:0px; color:#000000; font:normal 13px/40px var(--primary-font-family);}
+#bt_0_150_01 .leftMenu {float:left; padding: 0px 0px 0px 35px}
+#bt_0_150_01 .leftMenu li:first-child {padding:0px 10px 0px 25px; background: url(https://www.momoshop.com.tw/ecm/img/cmm/icon_home01.png)no-repeat 1px 11px/16px auto}
+#bt_0_150_01 .leftMenu li:first-child:hover {background: url(https://www.momoshop.com.tw/ecm/img/cmm/icon_home02.png)no-repeat 1px 11px/16px auto}
+#bt_0_150_01 .leftMenu li a p {display:none}
+#bt_0_150_01 .leftMenu li:first-child a {padding: 0px; color: #000000;}
+#bt_0_150_01 .leftMenu li:first-child a:hover {color: #d62872}
+#bt_0_150_01 .leftMenu li.headsearchbar {display:none; margin: 0px; padding:0px 0px;}
+#bt_0_150_01 .leftMenu li.headsearchbar:before {display: none}
+#bt_0_150_01 .leftMenu li.headsearchbar input[type="text"] {border:0px; width:230px; height:28px; padding:0px 10px; box-sizing:border-box; font: 13px/28px var(--primary-font-family); vertical-align:top; border-top-left-radius:100px; border-bottom-left-radius:100px; margin:6px 0px; background: #ffffff;}
+#bt_0_150_01 .leftMenu li.headsearchbar button {margin:6px 0px; padding:0px; width:70px; border:0px; background:#A0A0A0; font:bold 15px/28px var(--primary-font-family); color:#ffffff; border-top-right-radius:100px; border-bottom-right-radius:100px; box-sizing:border-box; vertical-align:top;}
+#bt_0_150_01 .leftMenu li.headsearchbar button:focus {outline: none}
+#bt_0_150_01 .rightMenu {float:right}
+#bt_0_150_01 .rightMenu li a p {display:none}
+#bt_0_150_01 .rightMenu li.memberName {cursor: auto}
+#bt_0_150_01 .rightMenu li:last-child {padding:0px 0px 0px 10px}
+#bt_0_150_01 .rightMenu li .shopcartBtn {border:1px solid #b7b7b7; color: #000000; background: #ffffff; font:13px/22px var(--primary-font-family); width: 50px; text-align: center; box-sizing: border-box; border-radius: 4px}
+#bt_0_150_01 .rightMenu li .shopcartBtn:hover {background: #d62872; color: #ffffff}
+#bt_0_150_01 .rightMenu li .activeBtn{font:normal 13px / 22px var(--primary-font-family);}
+
+/*大看板延伸背景*/
+.backgroundContent .content-2 {display:block; margin:0px auto; padding:0px 0px 0px 0px; width: 1220px; font-size: 0px; position:relative}
+.backgroundContent .content-3 {display:block; margin:0px auto; padding:10px 0px 0px 0px; width:1220px; font-size: 0px;}
+.backgroundContent {display: inline-block; width: 100%; position: relative}
+.backgroundContent:before {content:'';display: inline-block;margin:0px;padding: 0px;width: 100%;background-color: #E1DFE0;height:370px;position: absolute;left:0px;top: 0px;transition: 0.2s;}
+.backgroundContent.backgroundselected {height: auto;background: no-repeat top;}
+/*背景 bt_0_271*/
+.bt_0_271 span, .bt_0_271 img{display: none}
+.fixbackground {display: inline-block; margin: 0px; padding: 0px; width: 100%; box-sizing: border-box; position: fixed; bottom: 0px; left: 0px; z-index: -1; text-align:center;}
+/*LOGO bt_0_243*/
+.bt_0_243 {display:inline-block; margin:0px; padding:0px 0px 0px 10px}
+/*搜尋建議 bt_0_244 */
+.bt_0_244 ul{box-sizing:border-box;color:#d62872;display:flex;align-items:center;margin:0px;overflow:hidden;padding:0px;vertical-align:top;white-space:nowrap;width:510px;height:24px;}
+.bt_0_244 ul li{box-sizing:border-box;display:inline-flex;align-items:center;height:24px;overflow:hidden;padding:0px 10px;position:relative;font-family:var(--primary-font-family);font-size:13px;line-height:14px;}
+.bt_0_244 ul li a{color:#d62872}
+.bt_0_244 ul li:first-child{padding:0px 5px 0px 0px;width:auto}
+.bt_0_244 ul li:before{content:'｜';display:inline-flex;margin:0px;padding:0px;height:14px;width:1px;position:absolute;top:50%;left:-6px;margin-top:-7px;}
+.bt_0_244 ul li:first-child:before,.bt_0_244 ul li:nth-child(2):before{display:none}
+/*全站活動banner bt_0_245*/
+.bt_0_245 {display:inline-block; margin:0px; padding:30px 20px 20px 0px; }
+.bt_0_245 ul {display:inline-block; box-sizing:border-box; height: 70px; overflow:hidden; width:340px;white-space: nowrap;}
+.bt_0_245 ul li {display: inline-block; padding:0px; margin:0px}
+/*精選頻道 bt_0_246*/
+.bt_0_246 {display:inline-block; margin:4px 0px 0px 200px;; padding:0px; width:1020px; text-align: right; height: 36px; overflow:hidden; white-space: nowrap;}
+.bt_0_246 ul li {display: inline-block; padding:0px;}
+/*大看板 bt_0_247*/
+#bt_0_layout_b347 {display: inline-block;}
+.bt_0_247 {display:inline-block; margin:0px 0px 0px 200px; padding:0px; width: 818px; height:370px; position:relative; overflow: hidden;}
+.bt_0_247 .TabContent {display: inline-block;margin: 0px;padding: 0px;}
+.bt_0_247 .TabContent div{position:absolute; overflow: hidden;top: 0px}
+#bt_0_layout_b347 .dotsArea {position:absolute;margin: 10px auto;width: 100%;height:15px;text-align:center;z-index: 1;left: 0px;bottom: 0px;}
+#bt_0_layout_b347 .dotsArea ul { display:inline-block; margin:0; padding:0px; list-style:none; vertical-align:top}
+#bt_0_layout_b347 .dotsArea ul li{float:left;margin:2px 5px;cursor: pointer;}
+#bt_0_layout_b347 .dotsArea ul li a {display:inline-block; width: 6px;height: 6px;background-color: rgba(255, 255, 255,1);box-sizing:border-box;border-radius: 20px;transition: 0.2s;}
+#bt_0_layout_b347 .dotsArea ul li.selected a {width: 24px;}
+#bt_0_layout_b347 .arrow {display:inline-block;margin:0px;padding:0px;}
+#bt_0_layout_b347 .arrow .leftBtn, 
+#bt_0_layout_b347 .arrow .rightBtn {display: none;width:35px;height:60px;position: absolute;top:calc(50% - 30px);cursor: pointer;}
+#bt_0_layout_b347:hover .arrow .leftBtn,
+#bt_0_layout_b347:hover .arrow .rightBtn { display:inline-block}
+#bt_0_layout_b347:hover .arrow .leftBtn {left:0px;background: rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center;cursor:pointer;}
+#bt_0_layout_b347:hover .arrow .rightBtn {right:0px;background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center;cursor:pointer;}
+/*今日秒殺 bt_0_248*/
+#bt_0_layout_b348{float: right;}
+.bt_0_248 {display:inline-block; margin:10px 2px 10px 0px; padding: 0px 0px 0px 0px;}
+.bt_0_248 .boxtitle {display:block; margin: 0px; padding: 0px; width:auto; height:35px; background:no-repeat center/auto 100%; text-align:right; border-top-left-radius:10px; border-top-right-radius:10px;position: relative;}
+.bt_0_248 .boxtitle .TabMenu {display: inline-block; padding:calc(17px /2) 10px calc(17px /2) 0px}
+.bt_0_248 .boxtitle .TabMenu ul {margin:0px; padding: 0px}
+.bt_0_248 .boxtitle .TabMenu ul li {display:inline-block;margin:0px 0px 0px 4px; padding: 0px; width: 18px; height: 18px; background: #bbbbbb;font:13px/18px var(--primary-font-family); color: #ffffff; text-align: center; cursor:pointer}
+.bt_0_248 .boxtitle .TabMenu ul li:hover {background:#d62872}
+.bt_0_248 .boxtitle .TabMenu ul li:first-child{margin: 0px}
+.bt_0_248 .boxtitle .TabMenu ul li.selected {background:#d62872}
+.bt_0_248 .boxcontent .TabContent{width: 200px; height: 314px; overflow: hidden;}
+.bt_0_248 .boxcontent ul {display:inline-block; margin:0px 0px 0px 0px; padding:0px 0px 12px 0px; background: #ffffff; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
+.bt_0_248 .boxcontent ul li {padding:0px; margin:0px; position: relative; border-top:1px solid #ffffff}
+.bt_0_248 .boxcontent ul li:first-child, .bt_0_248 .boxcontent ul li:nth-child(4n) {border:none} 
+.bt_0_248 .boxcontent ul li:before {content:''; display:inline-block; margin:0px; padding:0px; height:1px; width:180px; background: #e5e5e5; position: absolute; top:0px; left:10px}
+.bt_0_248 .boxcontent ul li:first-child:before {display: none}
+.bt_0_248 .boxcontent ul li:first-child:before, .bt_0_248 .boxcontent ul li:nth-child(4n):before {display: none}
+/*小看板 bt_0_249*/
+#bt_0_layout_b349 {display: inline-block;}
+.bt_0_249 {display:inline-block; margin:0px 10px 0px 210px; padding: 0px}
+/*熱門直播 bt_0_250*/
+#bt_0_layout_b350 {display: inline-block;}
+.bt_0_250 {display:inline-block; margin:0px 10px 0px 0px; padding: 0px; width:270px; height: 120px;}
+.bt_0_250 .boxtitle {display: inline-block;height: 30px;width: 100%;background: no-repeat center/100% auto;text-align:right;background-color:#FF9C00;}
+.bt_0_250 .boxtitle .TabMenu {display:inline-block; padding:6px 5px 6px 0px;}
+.bt_0_250 .boxtitle .TabMenu ul {margin:0px; padding: 0px;counter-reset:num}
+.bt_0_250 .boxtitle .TabMenu ul li {display:inline-block;margin:0px 0px 0px 3px; padding: 0px; width: 18px; height: 18px; background:rgba(255,255,255, 0.5);font:13px/18px var(--primary-font-family); color:#FF9C00; text-align: center; cursor:pointer}
+.bt_0_250 .boxtitle .TabMenu ul li:before{counter-increment:num; content:counter(num)}
+.bt_0_250 .boxtitle .TabMenu ul li:hover {background:#ffffff}
+.bt_0_250 .boxtitle .TabMenu ul li:first-child{margin: 0px}
+.bt_0_250 .boxtitle .TabMenu ul li.selected {background:#ffffff}
+.bt_0_250 .boxcontent{background-color:#ffffff;}
+.bt_0_250 .boxcontent .TabContent {border-width: 0px 1px 1px 1px; border-bottom-style: solid; border-right-style: solid; border-left-style: solid;}
+.bt_0_250 .boxcontent .content-3-box02-innerbox {display:inline-block; padding: 10px; height:90px; width:100%; box-sizing: border-box; font-size: 0px;}
+.bt_0_250 .boxcontent .content-3-box02-innerbox .img-a {position:relative}
+.bt_0_250 .boxcontent .content-3-box02-innerbox .palycontent::before {content:'';margin: 0px;padding:0px;background: url(https://www.momoshop.com.tw/ecm/img/cmm/playBtn.png) no-repeat center/20px auto;width: 100%;height: 100%;display: inline-block;position: absolute;background-color: rgba(0,0,0, 0.2);top: 0px;left:0px; z-index:1}
+.bt_0_250 .boxcontent .content-3-box02-innerbox .img-a img {float: left;}
+.bt_0_250 .boxcontent .content-3-box02-innerbox .content-a {width: calc(100% - 134px); vertical-align: top; margin: 0px 0px 0px 10px;}
+.bt_0_250 .boxcontent .content-3-box02-innerbox .content-a span {display: inline-block; margin: 0px; padding: 0px; width:100%}
+.bt_0_250 .boxcontent .content-3-box02-innerbox .content-a span.maintitle {font:bold 13px/18px var(--primary-font-family); color: #000000; height:18px; overflow:hidden; margin: 8px 0px 0px 0px}
+.bt_0_250 .boxcontent .content-3-box02-innerbox .content-a span.contenttex {font:13px/18px var(--primary-font-family); color: #666666; margin:0px 0px 8px 0px; height: 36px;overflow: hidden;}
+.bt_0_250 .boxcontent .content-3-box02-innerbox:hover .content-a span{color:#d62872}
+/*電視購物 bt_0_251*/
+#bt_0_layout_b351 {display: inline-block;}
+.bt_0_251 {display:inline-block; margin: 0px; padding:0px; width:270px; height: 120px}
+.bt_0_251 .boxtitle {display: inline-block; height: 30px; width: 100%; background:no-repeat center/100% auto; text-align:right; background-color:#D62671 }
+.bt_0_251 .boxtitle .TabMenu {display:inline-block; padding:6px 5px 6px 0px}
+.bt_0_251 .boxtitle .TabMenu ul {margin:0px; padding: 0px}
+.bt_0_251 .boxtitle .TabMenu ul li {display:inline-block;margin:0px 0px 0px 3px; padding: 0px; width: 18px; height: 18px; background:rgba(255,255,255, 0.5);font:13px/18px var(--primary-font-family); color:#D62671; text-align: center; cursor:pointer}
+.bt_0_251 .boxtitle .TabMenu ul li:hover {background: #ffffff}
+.bt_0_251 .boxtitle .TabMenu ul li:first-child{margin: 0px}
+.bt_0_251 .boxtitle .TabMenu ul li.selected {background:#ffffff}
+.bt_0_251 .boxcontent{background-color:#ffffff;}
+.bt_0_251 .boxcontent .TabContent {border-width: 0px 1px 1px 1px; border-bottom-style: solid; border-right-style: solid; border-left-style: solid;}
+.bt_0_251 .boxcontent .content-3-box03-innerbox {display:inline-block; padding: 10px; height:90px; width:100%; box-sizing: border-box;}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .img-a {position:relative}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .palycontent::before {content:'';margin: 0px;padding:0px;background: url(https://www.momoshop.com.tw/ecm/img/cmm/playBtn.png) no-repeat center/20px auto;width: 100%;height: 100%;display: inline-block;position: absolute;background-color: rgba(0,0,0, 0.2);top: 0px;left:0px; z-index:1}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .img-a img {float: left;}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .content-a {margin: 0px 0px 0px 10px; width:calc(100% - 80px); vertical-align: top}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .content-a span {display: inline-block; margin: 0px; padding: 0px; width: 100%}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .content-a span.tvicon {font:12px/18px var(--primary-font-family); color: #d62872; border:1px solid #d62872; background: #ffffff; padding: 0px 5px; width:auto; box-sizing: border-box;}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .content-a span.maintitle {font:13px/18px var(--primary-font-family); color: #666666; height:18px; overflow:hidden; margin:4px 0px 0px 0px}
+.bt_0_251 .boxcontent .content-3-box03-innerbox .content-a span.pricetext {margin: 0px 0px 5px 0px; font:normal 13px/20px var(--price-font); color: #d62872; }
+.bt_0_251 .boxcontent .content-3-box03-innerbox .content-a span.pricetext b {display:inline-block; margin:0px; padding: 0px; font:normal 20px/20px var(--price-font); color: #d62872;}
+.bt_0_251 .boxcontent .content-3-box03-innerbox:hover .content-a span{color:#d62872}
+/*超級強檔 bt_0_252*/
+.bt_0_252 .boxTitle {display:inline-block; width: 100%;}
+.bt_0_252 .boxContent {display:inline-block; margin:0px 0px 0px 0px; padding: 0px; width:1220px; height:170px; overflow: hidden;} 
+.bt_0_252 .boxContent ul{display: inline-block;white-space: nowrap;width: 1220px;height: 170px;}
+.bt_0_252 .boxContent ul li {display: inline-block; float: left}
+/*爆殺24H bt_0_253*/
+.bt_0_253 {display:inline-block; margin:40px 0px 0px 0px; padding: 0px; width: 650px;}
+.bt_0_253 .boxtitle {display:inline-block;margin:0px;padding: 0px;height:60px;width:100%;background: no-repeat center/100% auto;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+.bt_0_253 .boxtitle img {border-top-left-radius: 10px; border-top-right-radius:10px;}
+.bt_0_253 .boxtitle .boxtitle_content {display:inline-block; width:100%; height:60px}
+.bt_0_253 .boxtitle .boxtitle_content .timeBox {color:#000000; display:inline-block; font:bold 14px/60px var(--primary-font-family); margin:0px 0px 0px 500px;}
+.bt_0_253 .boxtitle .boxtitle_content .timeBox b {width:22px; height:22px; background:#000000; color:#ffffff; display:inline-block; font:14px/22px var(--primary-font-family); margin:0 4px; text-align:center; border-radius:4px}
+.bt_0_253 .boxtitle .boxtitle_content .timeBox b:first-child {margin:0px 4px 0px 10px}
+.bt_0_253 .boxtitle .boxtitle_content .timeBox b:last-child {margin:0px 0px 0px 4px}
+.bt_0_253 .boxcontent {display:inline-block;width:100%;margin: 0px;padding:20px 35px;box-sizing: border-box;background: #FFFFFF;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;position: relative; height: 330px;}
+.bt_0_253 .boxcontent .leftarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; left:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev.png)no-repeat center; cursor:pointer}
+.bt_0_253 .boxcontent .rightarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; right:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next.png)no-repeat center; cursor:pointer }
+.bt_0_253 .boxcontent .leftarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center; cursor:pointer}
+.bt_0_253 .boxcontent .rightarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center; cursor:pointer}
+.bt_0_253 .boxcontent ul{width: 580px;height: 290px;overflow: hidden;}
+.bt_0_253 .boxcontent ul li {display: inline-block; margin:0px; padding: 0px 0px 10px 0px; box-sizing: border-box}
+.bt_0_253 .boxcontent ul li img {border-radius:6px;}
+.bt_0_253 .boxcontent ul li:nth-child(odd) {padding-right:10px}
+.bt_0_253 .boxcontent ul li:nth-child(3),
+.bt_0_253 .boxcontent ul li:nth-child(4),
+.bt_0_253 .boxcontent ul li:nth-child(7),
+.bt_0_253 .boxcontent ul li:nth-child(8),
+.bt_0_253 .boxcontent ul li:nth-child(11),
+.bt_0_253 .boxcontent ul li:nth-child(12) {padding-bottom: 0px}
+/*發燒主題 bt_0_254*/
+.bt_0_254 {display:inline-block; margin:10px 0px 0px 0px; padding: 0px; width: 650px; }
+.bt_0_254 .boxBk {background-color:#FFFFFF;border-radius: 10px; width: 650px;}
+.bt_0_254 .boxtitle {display:inline-block;margin:0px;padding: 0px;height:45px;width:100%;background: no-repeat center/100% auto;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+.bt_0_254 .boxtitle img {border-top-left-radius: 10px; border-top-right-radius:10px;}
+.bt_0_254 .boxcontent {display:inline-block;width:100%;margin: 0px;padding:0px 35px 17px 35px;box-sizing: border-box; border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;position: relative;}
+.bt_0_254 .boxcontent .leftarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; left:0px; top:calc(((100% - 17px) - 60px) / 2); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev.png)no-repeat center; cursor:pointer}
+.bt_0_254 .boxcontent .rightarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; right:0px; top:calc(((100% - 17px) - 60px) / 2); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next.png)no-repeat center; cursor:pointer }
+.bt_0_254 .boxcontent .leftarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center; cursor:pointer}
+.bt_0_254 .boxcontent .rightarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center; cursor:pointer}
+.bt_0_254 .boxcontent ul{width: 580px;height: 108px;overflow: hidden;}
+.bt_0_254 .boxcontent ul li {display: inline-block; margin:0px 10px 0px 0px; padding: 0px 0px 0px 0px; box-sizing: border-box; position:relative }
+.bt_0_254 .boxcontent ul li:nth-child(5n) {margin:0px}
+.bt_0_254 .boxcontent ul li a img {border-radius:4px; width: 108px; height: 108px;}
+.bt_0_254 .boxcontent ul li a .bkTag {display:inline-block; margin:0px; padding:0px 10px; background:rgba(0, 0, 0, 0.75);font:14px/28px var(--primary-font-family); color:#ffffff; position:absolute; left:0px; bottom:0px; box-sizing:border-box; width:100%; border-bottom-left-radius:4px; border-bottom-right-radius:4px; text-align:center; height:28px; overflow:hidden; vertical-align:top;word-break:break-all;}
+/*熱銷排行榜 bt_0_255*/
+.bt_0_255 {margin:40px 0px 0px 0px;width: 1220px;}
+.bt_0_255 .boxtitle {display:inline-block;margin:0px;padding: 0px;text-align: right;border-bottom: 1px solid #a6a6a6;height:40px;width:100%;background: no-repeat;background-size: 100% auto;}
+.bt_0_255 .boxtitle .boxtitle_content li {display:inline-block; margin:0px; padding:0px 6px; font:13px/40px var(--primary-font-family); position: relative; cursor: pointer; height: 40px;}
+.bt_0_255 .boxtitle .boxtitle_content li:before {content:''; display:inline-block; margin:0px; padding:0px; height:12px; width: 1px; background: #000000; position: absolute; top:14px; left:0px}
+.bt_0_255 .boxtitle .boxtitle_content li:first-child:before {display: none}
+.bt_0_255 .boxtitle .boxtitle_content li a {display:inline-block; margin:0px; padding:0px 9px; font:13px/20px var(--primary-font-family); color:#000000}
+.bt_0_255 .boxtitle .boxtitle_content li:hover a {font-weight:bold; background: #d62872; border-radius:10px; color: #ffffff }
+.bt_0_255 .boxtitle .boxtitle_content li.selected a {font-weight:bold; background: #d62872; border-radius:10px; color: #ffffff }
+.bt_0_255 .boxtitle .boxtitle_content li.selected a span{color: #ffffff}
+.bt_0_255 .boxcontent {display:inline-block; margin:0px; padding:30px 60px 30px 60px; background:#F2F2F2; width: 100%; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; box-sizing: border-box; position:relative; counter-reset:num;} 
+.bt_0_255 .boxcontent:before {content: ''; display: inline-block; margin: 0px; padding: 0px; background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_crown.png)no-repeat center/auto 100%; width:25px; height:25px; top:6px; left:176px; position: absolute}
+.bt_0_255 .boxcontent ul li {display: inline-block; margin:0px 20px 0px 0px; padding: 0px 0px 0px 0px; box-sizing: border-box; text-align: center; width: 140px; position:relative; height: 190px; vertical-align: top}
+.bt_0_255 .boxcontent ul li:last-child{margin: 0px}
+.bt_0_255 .boxcontent ul li:before {content:counter(num); counter-increment: num; display: inline-block; margin: 0px; padding: 0px; background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_flag03.png)no-repeat center/auto 100%; width:24px; height:32px; top:0px; right:0px; position: absolute; color: #ffffff; font:bold 15px/28px var(--primary-font-family); z-index:1}
+.bt_0_255 .boxcontent ul li a img {border-radius:6px}
+.bt_0_255 .boxcontent ul li .prdname {display:inline-block; margin:10px 0px 0px 0px ; padding:0px 0px 0px 0px; font:13px/18px var(--primary-font-family); color: #000000; height:18px; overflow:hidden; width: 100%;word-break:break-all;}
+.bt_0_255 .boxcontent ul li .prdname:hover {color:#d62872}
+.bt_0_255 .boxcontent ul li .prdprice {display:inline-block; margin:2px 0px 0px 0px ; padding:0px 0px 0px 0px; width: 100%; height: 20px;}
+.bt_0_255 .boxcontent ul li .prdprice .prdprice_box01 {display:inline-block; margin:0px ; padding:0px 0px; font:10px/10px Century Gothic, sans-serif; color: #999999; vertical-align: baseline}
+.bt_0_255 .boxcontent ul li .prdprice .prdprice_box01 b {display:inline-block; margin:0px ; padding:0px 0px; font:13px/15px Century Gothic, sans-serif; color: #999999; text-decoration:line-through;}
+.bt_0_255 .boxcontent ul li .prdprice .prdprice_box02 {display:inline-block; margin:0px 0px 0px 5px ; padding:0px 0px; font:13px/13px Century Gothic, sans-serif; color: #d62872; vertical-align: baseline}
+.bt_0_255 .boxcontent ul li .prdprice .prdprice_box02 b {display:inline-block; margin:0px ; padding:0px 0px; font:20px/20px Century Gothic, sans-serif; color: #d62872}
+.bt_0_255 .openvideoBtn{display:none}
+.bt_0_255 .viewVideo .openvideoBtn {display:block; width: 100%;height: 140px;background: rgba(0, 0, 0, 0) url(/ecm/img/cmm/main/video_icon2.png) no-repeat scroll center center;background-size: 50px;margin: auto;padding: 0;position: absolute;background-color: rgba(0,0,0, 0.4);top: 0px;left: 0px;}
+/*中腰帶 bt_0_256*/
+.bt_0_256 {display:inline-block; margin:40px 0px 0px 0px; padding: 0px; width:100%; box-sizing: border-box}
+/*銀行好康 bt_0_257*/
+.bt_0_257 .boxtitle {display:inline-block; margin: 0px; padding: 0px; width: 100%; }
+.bt_0_257 .boxcontent {display:inline-block; margin:0px; padding:0px; box-sizing: border-box; position: relative;width: 1220px; overflow: hidden;text-align: center;} 
+.bt_0_257 .boxcontent .leftarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; left:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev.png)no-repeat center; cursor:pointer; z-index:1}
+.bt_0_257 .boxcontent .rightarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; right:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next.png)no-repeat center; cursor:pointer; z-index:1}
+.bt_0_257 .boxcontent .leftarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center; cursor:pointer}
+.bt_0_257 .boxcontent .rightarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center; cursor:pointer}
+.bt_0_257 .boxcontent ul {height: 125px; overflow: hidden; white-space: nowrap; position: absolute; transition: transform 2s ease-in-out;}
+.bt_0_257 .boxcontent ul li {display: inline-block; margin:0px 0px 0px 6px; padding: 0px 0px 0px 0px; box-sizing: border-box; width:auto}
+.bt_0_257 .boxcontent ul li img{width:250px;height:125px}
+.bt_0_257 .boxcontent .boxcontentinner {display: inline-block; width: 1150px; height: 130px; overflow: hidden; position: relative; box-sizing: border-box; line-height: 0px; margin: 0px; padding: 5px 0px 5px 0px;}
+/*今日最大牌 bt_0_258*/
+.bt_0_258 {display:inline-block; margin:30px 38px 0px 0px; padding: 0px; height: 540px; width: 752px; float:left; position: relative;}
+.bt_0_258 .boxtitle {display:inline-block;margin:0px 0px 0px 0px;padding: 0px;width:752px;height:40px;background: no-repeat center/100% 100%;border-bottom: 1px solid #a6a6a6;}
+.bt_0_258 .boxcontent {display:inline-block; margin:30px 0px 0px 0px; padding:0px; width:752px; height:470px; box-sizing: border-box; border-radius: 10px; } 
+.bt_0_258 .boxcontent .boxcontent_01{width: 752px;height: 255px;position: relative; overflow: hidden;}
+.bt_0_258 .boxcontent .boxcontent_01 ul li {display:inline-block; margin: 0px 0px 0px 0px; background:#F2F2F2; position: absolute; overflow: hidden;}
+.bt_0_258 .boxcontent .boxcontent_01 ul li a img {border-top-left-radius: 10px; border-top-right-radius: 10px;}
+.bt_0_258 .boxcontent .boxcontent_02 ul li {display:inline-block; width:188px; margin: 0px 0px 0px 0px; background:#F2F2F2}
+.bt_0_258 .boxcontent .boxcontent_02 ul li:first-child a img { border-bottom-left-radius: 10px;}
+.bt_0_258 .boxcontent .boxcontent_02 ul li:last-child a img {border-bottom-right-radius: 10px;}
+.bt_0_258 .boxcontent .boxcontent_02 ul li:first-child{border-bottom-left-radius: 10px;}
+.bt_0_258 .boxcontent .boxcontent_02 ul li:last-child{border-bottom-right-radius: 10px;}
+.bt_0_258 .boxcontent .boxcontent_01 .dotsArea {position:absolute;margin: 10px auto;width: 100%;height:15px;text-align:center;z-index: 1;left: 0px;bottom: 0px;}
+.bt_0_258 .boxcontent .boxcontent_01 .dotsArea ul { display:inline-block; margin:0; padding:0px; list-style:none; vertical-align:top}
+.bt_0_258 .boxcontent .boxcontent_01 .dotsArea ul li{float:left;margin:2px 5px;cursor: pointer;display: inline-block;position: initial;background: transparent;overflow: auto;}
+.bt_0_258 .boxcontent .boxcontent_01 .dotsArea ul li a {display:inline-block;width: 6px;height: 6px;background-color: rgba(255, 255, 255,1);box-sizing:border-box;border-radius: 20px;transition: 0.2s;}
+.bt_0_258 .boxcontent .boxcontent_01 .dotsArea ul li.selected a {width: 24px;background: rgba(255, 255, 255,1);}
+.bt_0_258 .boxcontent .boxcontent_01 .arrow {display:inline-block;margin:0px;padding:0px;}
+.bt_0_258 .boxcontent .boxcontent_01 .arrow .leftBtn, 
+.bt_0_258 .boxcontent .boxcontent_01 .arrow .rightBtn {display: none;width:35px;height:60px;position: absolute;top:calc(50% - 30px);cursor: pointer;}
+.bt_0_258 .boxcontent .boxcontent_01:hover .arrow .leftBtn,
+.bt_0_258 .boxcontent .boxcontent_01:hover .arrow .rightBtn { display:inline-block}
+.bt_0_258 .boxcontent .boxcontent_01:hover .arrow .leftBtn {left:0px;background: rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center;cursor:pointer;}
+.bt_0_258 .boxcontent .boxcontent_01:hover .arrow .rightBtn {right:0px;background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center;cursor:pointer;}
+/*會員好康 bt_0_259*/
+.bt_0_259 {display:inline-block; margin:30px 0px 0px 0px; padding: 0px; height:310px; width:430px;position: relative;float:right;}
+.bt_0_259 .boxtitle {display:inline-block;margin:0px 0px 0px 0px;padding: 0px;width:430px;height:40px;background: no-repeat center/100% 100%;border-bottom: 1px solid #a6a6a6;}
+.bt_0_259 .boxcontent {display:inline-block; margin:0px; padding:30px 15px 0px 15px; width:430px; height:270px; box-sizing: border-box; background: #ffffff; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; overflow: hidden;} 
+.bt_0_259 .boxcontent ul li {display:inline-block; width:195px; margin: 0px 0px 20px 0px}
+.bt_0_259 .boxcontent ul li:nth-child(2n) {margin-left:10px;}
+.bt_0_259 .boxcontent ul li a {width: 100%; font-size: 0px;}
+.bt_0_259 .boxcontent ul li a img {border-radius:6px;}
+.bt_0_259 .boxcontent ul li a .iocntext {display:inline-block; width:125px; margin:8px 0px 8px 10px; font:14px/22px var(--primary-font-family); color: #666666}
+.bt_0_259 .boxcontent ul li a .iocntext b {display: block; font:bold 16px/22px var(--primary-font-family); color: #000000; width:100%; height:22px; overflow: hidden;}
+.bt_0_259 .boxcontent ul li a .iocntext .icontextcontent {font:14px/22px var(--primary-font-family); color:#666666; height:22px; overflow: hidden;}
+/*精選會場 bt_0_260*/
+.bt_0_260 {display:inline-block; margin: 0px 0px 0px 0px; padding: 0px; height:230px; width:430px;position: relative;}
+.bt_0_260 .boxtitle {display:inline-block;margin:0px 0px 0px 0px;padding: 0px;width:430px;height:40px;background: no-repeat center/auto 100%;border-bottom: 1px solid #a6a6a6;text-align:right;}
+.bt_0_260 .boxtitle .TabMenu {display: inline-block; padding:11px 8px 11px 0px;}
+.bt_0_260 .boxtitle .TabMenu ul {margin:0px; padding: 0px; counter-reset:num}
+.bt_0_260 .boxtitle .TabMenu ul li {display:inline-block;margin:0px 0px 0px 3px; padding: 0px; width: 18px; height: 18px; background: #bbbbbb;font:13px/18px var(--primary-font-family); color: #ffffff; text-align: center; cursor:pointer}
+.bt_0_260 .boxtitle .TabMenu ul li:before{counter-increment:num; content:counter(num)}
+.bt_0_260 .boxtitle .TabMenu ul li:hover {background:#d62872}
+.bt_0_260 .boxtitle .TabMenu ul li:first-child{margin: 0px}
+.bt_0_260 .boxtitle .TabMenu ul li.selected {background:#d62872}
+.bt_0_260 .TabContent{border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;background-color:#FFFFFF}
+.bt_0_260 .boxcontent {display:inline-block;margin:0px;padding:20px 25px 10px 25px;height:auto;box-sizing: border-box;text-align: center;} 
+.bt_0_260 .boxcontent ul li {display:inline-block; width:110px; margin: 0px 25px 0px 0px; padding: 0px; text-align: center}
+.bt_0_260 .boxcontent ul li:last-child {margin: 0px}
+.bt_0_260 .boxcontent ul li a img {border-radius:6px}
+.bt_0_260 .boxcontent ul li a .prdname {display:inline-block; margin:10px 0px 0px 0px; padding: 0px; font:bold 16px/20px var(--primary-font-family); color: #000000; height: 20px; overflow: hidden;word-break:break-all; width:100%;}
+.bt_0_260 .boxcontent ul li a .prdads {display:inline-block; margin:0px 0px 0px 0px; padding: 0px; font:bold 14px/20px var(--primary-font-family); color: #666666;height: 20px; overflow: hidden; word-break:break-all; width:100%;}
+/*好物開箱 bt_0_261*/
+.bt_0_261 {display:inline-block;; margin:40px 0px 0px 0px; }
+.bt_0_261 .boxtitle {display:inline-block;margin:0px 0px 0px 0px;padding: 0px;width:1220px;height:40px;background: no-repeat center/auto 100%;border-bottom: 1px solid #a6a6a6;text-align:right;}
+.bt_0_261 .boxcontent {display: inline-block;margin: 0px;box-sizing: border-box;background: #ffffff;text-align: center;position: relative;width: 1220px;overflow: hidden;padding: 0px;}
+.bt_0_261 .boxcontent .leftarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; left:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev.png)no-repeat center; cursor:pointer; z-index:1}
+.bt_0_261 .boxcontent .rightarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; right:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next.png)no-repeat center; cursor:pointer; z-index:1}
+.bt_0_261 .boxcontent .leftarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center; cursor:pointer}
+.bt_0_261 .boxcontent .rightarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center; cursor:pointer}
+.bt_0_261 .boxcontent .boxcontentinner {display: inline-block; width:1120px; height:275px; overflow: hidden; position: relative; box-sizing:border-box; line-height:0px; margin:0px; padding:25px 0px 10px 0px;}
+.bt_0_261 .boxcontent .boxcontentinner ul {white-space: nowrap; overflow: hidden; position: absolute; transition: transform 2s ease-in-out;}
+.bt_0_261 .boxcontent .boxcontentinner ul li {display: inline-block; width: 240px; margin: 0px 20px 0px 0px; padding: 0px; white-space: normal; text-align: left; position: relative;}
+.bt_0_261 .boxcontent .boxcontentinner ul li a img {border-radius:4px;width: 240px;height: 135px;}
+.bt_0_261 .boxcontent .boxcontentinner ul li a.playArea { position: absolute; top: 0px; left: 0px; margin: 0px; padding: 0px;}
+.bt_0_261 .boxcontent .boxcontentinner ul li .brand {display:inline-block;margin:15px 0px 0px 0px;padding:0px 0px;box-sizing: border-box; overflow: hidden;width: 100%;}
+.bt_0_261 .boxcontent .boxcontentinner ul li .brand span:first-child {display: inline-block;margin: 0px 0px 0px 0px;padding: 0px 5px;box-sizing: border-box;font: bold 15px/20px var(--primary-font-family);color: #ffffff;background: #00C1AD;height: 20px;overflow: hidden;border: 0px;word-break:break-all;}
+.bt_0_261 .boxcontent .boxcontentinner ul li .brand span:nth-child(3) {display: inline-block;width: 100%;font: bold 15px/20px var(--primary-font-family);color: #000000;height: 20px;overflow: hidden;margin: 5px 0px 0px 0px;word-break:break-all;}
+.bt_0_261 .boxcontent .boxcontentinner ul li .brandInfo {display:inline-block;width: 100%;margin:5px 0px 0px 0px;}
+.bt_0_261 .boxcontent .boxcontentinner ul li .brandInfo span {display: -webkit-box;width: 100%;font: 13px/20px var(--primary-font-family);color: #666666;height: 40px;overflow: hidden;-webkit-line-clamp: 2;text-overflow: ellipsis;-webkit-box-orient:vertical; word-break: break-all;}
+.bt_0_261 .boxcontent .boxcontentinner ul li .priceArea {display: none;}
+/*momo同樂會 bt_0_262*/
+.bt_0_262 {width:290px;position:relative;margin: 12px 20px 40px 0px;padding:0px;display: inline-block;float:left;}
+.bt_0_262 h3 {margin:0px 0px 10px 0px; padding:0px 0px 0px 10px; width:280px; height:35px; overflow:hidden; background:transparent; text-align:left; }
+.bt_0_262 h3 span {display: inline-block; font:bold 17px/35px var(--primary-font-family); color:#000000; height: 35px; width: 175px; overflow: hidden;}
+.bt_0_262 .TabMenu {position:absolute; top:0px; right:0px}
+.bt_0_262 .TabMenu ul {margin:0px; padding:0px; display:block; list-style:none; background:#000;counter-reset:num}
+.bt_0_262 .TabMenu ul li {float:left; width:35px; height:35px; }
+.bt_0_262 .TabMenu ul li:before{counter-increment:num; content:counter(num)}
+.bt_0_262 .TabMenu ul li {display: inline-block; width:35px; height:33px; text-align:center; font:bold 14px/33px var(--primary-font-family); background:#FFFFFF; color:#CCCCCC; border-bottom:2px solid #CCCCCC; cursor:pointer;background:transparent}
+.bt_0_262 .TabMenu ul li.selected{color:#D62872; border-bottom:2px solid #D62872}
+.bt_0_262 .TabContent {width:290px; height:260px; overflow:hidden}
+.bt_0_262 .TabContent .TabContentD {display:none; width:290px; height:260px;}
+.bt_0_262 .TabContent .TabContentD ul {list-style:none; padding:0px; margin:0px;}
+.bt_0_262 .TabContent .selected {display:block}
+.bt_0_262 .TabContent .TabContentD a {float:left; width:290px; height:260px;}
+.bt_0_262 .TabContent .TabContentD a img {display:inline-block; width:290px; height:260px; vertical-align:top}
+#bt_0_262_04 {margin-right: 0px;}
+/*限時搶購 bt_0_263*/
+.bt_0_263 {display:inline-block; margin:40px 20px 0px 0px; padding: 0px; width: 550px; float: left}
+.bt_0_263 .boxtitle {display:inline-block;margin:0px;padding: 0px;height:60px;width:100%;background: no-repeat center/auto 100%;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+.bt_0_263 .boxtitle img {border-top-left-radius: 10px; border-top-right-radius:10px;}
+.bt_0_263 .boxtitle .boxtitle_content {display:inline-block; width:100%; height:60px;}
+.bt_0_263 .boxtitle .boxtitle_content .timeBox {display:inline-block; margin:0px 0px 0px 150px; font:bold 14px/60px var(--primary-font-family); color:#000000; }
+.bt_0_263 .boxtitle .boxtitle_content .timeBox b {width:22px; height:22px; background:#000000; color:#ffffff; display:inline-block; font:14px/22px var(--primary-font-family); margin:0 4px; text-align:center; border-radius:4px}
+.bt_0_263 .boxtitle .boxtitle_content .timeBox b:first-child {margin:0px 4px 0px 10px}
+.bt_0_263 .boxtitle .boxtitle_content .timeBox b:last-child {margin:0px 0px 0px 4px}
+.bt_0_263 .boxtitle .boxtitle_content .rightbox {display: inline-block; margin:0px 10px 0px 0px; padding: 0px; font: bold 14px/60px var(--primary-font-family); float:right }
+.bt_0_263 .boxtitle .boxtitle_content .rightbox a {display:inline-block; margin:0px 0px 0px 0px; padding:0px 10px; font:bold 14px/26px var(--primary-font-family); color:#FF6C00;background:#ffffff; border-radius:15px;}
+.bt_0_263 .boxtitle .boxtitle_content .rightbox a.timeselected:hover {background:#FF4900; color:#ffffff} 
+.bt_0_263 .boxtitle .boxtitle_content .content-2-box01 {display:inline-block; margin:0px 10px 0px 0px; padding: 0px; float:right; font:14px/60px var(--primary-font-family);}
+.bt_0_263 .boxtitle .boxtitle_content .content-2-box01 a {display: inline-block; margin: 0px 0px 0px 8px; padding:0px 10px; font:14px/26px var(--primary-font-family); color:#FF5D1D; background: #ffffff; border-radius:20px}
+.bt_0_263 .boxcontent {display:inline-block; margin: 0px; padding:20px 35px; box-sizing: border-box; background:#FFFFFF; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; height: 509px; width: 100%;}
+.bt_0_263 .boxcontent ul li {display: inline-block; margin: 0px 30px 0px 0px; padding: 0px; width: 140px; overflow: hidden; text-align: center; position: relative }
+.bt_0_263 .boxcontent ul li:nth-child(3n) {margin-right: 0px}
+.bt_0_263 .boxcontent ul li:nth-child(1),
+.bt_0_263 .boxcontent ul li:nth-child(2),
+.bt_0_263 .boxcontent ul li:nth-child(3){margin-bottom:8px}
+.bt_0_263 .boxcontent ul li img{border-radius: 6px}
+.bt_0_263 .boxcontent ul li .prdtag {display:inline-block; margin:0px; padding: 0px 10px 0px 10px; position: absolute; top: 127px; left: 8px; background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prdtag01.png)no-repeat left center/100% auto; font:13px/24px var(--primary-font-family); color: #ffffff;}
+.bt_0_263 .boxcontent ul li .prdtag b {display:inline-block; margin:0px; padding: 0px 0px; font:13px/24px var(--primary-font-family); color: #ffffff;}
+.bt_0_263 .boxcontent ul li .prdname {display:inline-block; margin:18px 0px 0px 0px ; padding:0px 0px 0px 0px; font:13px/18px var(--primary-font-family); color: #000000; height:36px; overflow:hidden;word-break:break-all}
+.bt_0_263 .boxcontent ul li .prdname:hover {color:#d62872}
+.bt_0_263 .boxtitle .boxtitle_content .rightbox .TabMenu { display: inline-block; line-height: 0px;}
+.bt_0_263 .boxtitle .boxtitle_content .rightbox .TabMenu ul {display:  inline-block;  margin: 17px 0px 17px 0px;}
+.bt_0_263 .boxtitle .boxtitle_content .rightbox .TabMenu ul li {display: inline-block;margin: 0px 10px 0px 0px;padding: 0px;}
+.bt_0_263 .boxtitle .boxtitle_content .rightbox .TabMenu ul li.selected a {background: #FF4900; color: #ffffff;}
+.bt_0_263 .boxcontent ul li .limitedtag {background-image:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prdtag02.png)}
+/*你可能會喜歡 bt_0_272*/
+.bt_0_272 {display:inline-block;margin:30px 15px 0px 0px;padding: 0px;width:480px;height:425px;float:left;border-radius:10px;background: no-repeat center/100% auto;position: relative;}
+.bt_0_272 .box{width: 100%;border-radius: 10px;height: 425px;}
+.bt_0_272 .boxtitle {display:inline-block; margin:0px; padding: 0px; background:transparent ;position: absolute; top: 40px; background: no-repeat center; z-index: 1;background-size: 100% auto;}
+.bt_0_272 .boxtitle a {display:inline-block;margin:0px;padding:0px;width: 170px;height:40px;}
+.bt_0_272 .boxtitle a:hover {background:no-repeat center;background-size: 100% auto;}
+.bt_0_272 .boxcontent {display:inline-block;margin:0px;padding: 125px 0px 0px 0px;box-sizing: border-box; width: 480px; height: 400px; overflow: hidden;position: relative;}
+.bt_0_272 .boxcontent .leftarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; left:0px; top:50%; background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev.png)no-repeat center; cursor:pointer; z-index:1}
+.bt_0_272 .boxcontent .rightarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; right:0px; top:50%; background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next.png)no-repeat center; cursor:pointer; z-index:1 }
+.bt_0_272 .boxcontent .leftarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center; cursor:pointer}
+.bt_0_272 .boxcontent .rightarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center; cursor:pointer}
+.bt_0_272 .boxcontent ul {display: inline-block; width:465px; height:255px; white-space: nowrap; overflow: hidden; padding:0px 0px 20px 0px; position: absolute; transition: transform 2s ease-in-out;}
+.bt_0_272 .boxcontent ul li {display:inline-block;margin:0px 0px 0px 15px;padding: 10px 10px 15px 10px;box-sizing: border-box;width: 180px;background:#ffffff;border-radius:6px;white-space: normal;text-align:center;box-shadow:4px 4px 20px 0px rgba(0, 0, 0, 0.5); vertical-align: top;position:relative;}
+.bt_0_272 .boxcontent ul li a img {border-radius:6px}
+.bt_0_272 .boxcontent ul li:hover .hoverTip {display:inline-block}
+.bt_0_272 .boxcontent ul li .hoverTip {display:none;margin:0px;padding:0px;width: 160px;background:rgba(0,0,0,0.5);height:36px;position:absolute;left: 10px;bottom: 85px;border-bottom-left-radius:6px;border-bottom-right-radius:6px;cursor:  pointer;}
+.bt_0_272 .boxcontent ul li .hoverTip span {display:inline-block; margin:0px; padding:0px; width:50%; text-align:center; height:36px}
+.bt_0_272 .boxcontent ul li .hoverTip span.addlikebtn {background:url(https://image.momoshop.com.tw/ecm/img/de/0/bt_0_268/star.png?t=20170815001)no-repeat center/25px auto;}
+.bt_0_272 .boxcontent ul li .hoverTip span.removelikebtn {background:url(https://image.momoshop.com.tw/ecm/img/de/0/bt_0_268/trash.png?t=20170815001)no-repeat center/25px auto;}
+.bt_0_272 .boxcontent ul li .prdname {display:inline-block; margin:10px 0px 0px 0px ; padding:0px 0px 0px 0px; font:13px/18px var(--primary-font-family); color: #000000; height:36px; overflow:hidden;width:100%;word-break:break-all;}
+.bt_0_272 .boxcontent ul li .prdname:hover {color:#d62872}
+/*大家都在買 bt_0_269*/
+.bt_0_269 {display:inline-block; margin:30px 0px 0px 0px; padding: 0px; width:725px; height:250px; background-color:#FFFFFF}
+.bt_0_269 .boxBk {width: 100%; border-top-left-radius: 10px; border-top-right-radius: 10px; margin: 0px; padding: 0px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
+.bt_0_269 .boxtitle {display:inline-block;margin:0px;padding: 0px;height:55px;width:100%;background: no-repeat center/auto 100%;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+.bt_0_269 .boxcontent {display:inline-block;margin:0px;padding:0px 15px 15px 15px;width: 100%;box-sizing: border-box;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;position:relative;} 
+.bt_0_269 .boxcontent .leftarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; left:0px; top:calc((100% - 75px) / 2); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev.png)no-repeat center; cursor:pointer; z-index: 1}
+.bt_0_269 .boxcontent .rightarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; right:0px; top:calc((100% - 75px) / 2); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next.png)no-repeat center; cursor:pointer; z-index: 1 }
+.bt_0_269 .boxcontent .leftarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center; cursor:pointer}
+.bt_0_269 .boxcontent .rightarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center; cursor:pointer}
+.bt_0_269 .boxcontent ul {display: inline-block; width: 695px; height: 180px; overflow: hidden; font-size: 0px;}
+.bt_0_269 .boxcontent ul li {display: inline-block; margin:0px calc(45px / 4) 0px 0px; padding:10px 5px; box-sizing: border-box; text-align: center; width: 130px; position:relative; background:#ffffff; border-radius:6px }
+.bt_0_269 .boxcontent ul li:nth-child(5n) {margin: 0px;}
+.bt_0_269 .boxcontent ul li a img {border-radius:6px}
+.bt_0_269 .boxcontent ul li .prdname {display:inline-block; margin:10px 0px 0px 0px ; padding:0px 0px 0px 0px; font:13px/18px var(--primary-font-family); color: #000000; height:18px; overflow:hidden;word-break:break-all;}
+.bt_0_269 .boxcontent ul li .prdname:hover {color:#d62872}
+/*熱門追蹤商品 bt_0_270*/
+.bt_0_270 {display:inline-block; margin:10px 0px 0px 0px; padding: 0px; width:725px; height:165px; float:left; }
+.bt_0_270 .boxtitle {display:inline-block;margin:0px;padding: 0px;height:165px;width:45px;background: no-repeat center/auto 100%;border-top-left-radius: 10px;border-bottom-left-radius: 10px;}
+.bt_0_270 .boxcontent {display:inline-block;margin:0px;padding:15px 15px 0 15px;width:680px;height: 100%;box-sizing: border-box;border-top-right-radius: 10px;border-bottom-right-radius:10px;counter-reset:num;position:relative;background-color:#ffffff;} 
+.bt_0_270 .boxcontent .leftarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; left:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev.png)no-repeat center; cursor:pointer; z-index: 1}
+.bt_0_270 .boxcontent .rightarrow {display:inline-block; margin:0px; padding:0px; height:60px; width: 35px; position: absolute; right:0px; top:calc(50% - 30px); background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next.png)no-repeat center; cursor:pointer; z-index: 1}
+.bt_0_270 .boxcontent .leftarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_prev_white.png)no-repeat center; cursor:pointer}
+.bt_0_270 .boxcontent .rightarrow:hover {background:rgba(0,0,0, 0.25) url(https://www.momoshop.com.tw/ecm/img/cmm/icon_next_white.png)no-repeat center; cursor:pointer}
+.bt_0_270 .boxcontent ul{width: 650px;height: 144px;  overflow: hidden;}
+.bt_0_270 .boxcontent ul li {display:inline-block; width:84px; position:relative; text-align: center; margin: 0px calc(62px / 6) 0px 0px; vertical-align: top;}
+.bt_0_270 .boxcontent ul li:nth-child(7n){margin: 0px}
+.bt_0_270 .boxcontent ul li i {display: inline-block; margin: 0px; padding: 0px; background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_flag02.png)no-repeat center/auto 100%; width:20px; height:22px; top:0px; right:0px; position: absolute; color: #ffffff; font:bold 13px/18px var(--primary-font-family); text-align: center; z-index:1}
+.bt_0_270 .boxcontent ul li:nth-child(1) i,
+.bt_0_270 .boxcontent ul li:nth-child(2) i,
+.bt_0_270 .boxcontent ul li:nth-child(3) i {background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_flag01.png)no-repeat center/auto 100%;}
+.bt_0_270 .boxcontent ul li a img {border-radius: 4px}
+.bt_0_270 .boxcontent ul li .prdtrack {display:inline-block; margin:0px; padding:0px 10px 0px 24px;background:url(https://www.momoshop.com.tw/ecm/img/cmm/icon_heart.png) no-repeat 10px 4px/auto 10px; width:auto; max-width:50px; background-color: #A6A6A6; border-radius: 9px; color: #ffffff; font: 12px/18px var(--primary-font-family); overflow: hidden; height: 18px; word-wrap: break-word; min-width:10px; max-width:50px;}
+.bt_0_270 .boxcontent ul li .prdprice{display:inline-block;margin:4px 0 0 0;padding:0px 0px;font:15px / 15px Microsoft JhengHei,sans-serif;color:#d62872;vertical-align:text-bottom;width:100%;}
+.bt_0_270 .boxcontent ul li .prdprice .prdprice_box02{display:inline-block;margin:0px 0px 0px 0px;padding:0px 0px;font:13px/15px Century Gothic,sans-serif;color:#d62872;vertical-align:baseline;}
+.bt_0_270 .boxcontent ul li .prdprice .prdprice_box02 b{display:inline-block;margin:0px;padding:0px 0px;font:20px/20px Century Gothic,sans-serif;color:#d62872;letter-spacing:-0.05em;}
+.bt_0_270 .boxcontent ul li .oPrdprice{color:#b3b3b3;font:13px/20px Century Gothic,sans-serif;text-decoration:line-through;}
+.bt_0_270 .boxcontent ul li .oPrdprice b{font-weight:normal;}
+/*footer*/
+.footer {min-width:1220px; width:100%; background-color:#31384A; margin:0px auto; padding:0px;clear: both; text-align: center}
+.footer .footerInnerArea {min-width:1220px;width:1220px;height:309px;font:15px/20px var(--primary-font-family);color:#FFFFFF;text-align:center;margin:0px auto;padding:50px 0px;position:relative;display: block;}
+.footer .footerInnerArea .groupsBox {width:130px; text-align:left; margin:0px 0px 0px 26px}
+.footer .footerInnerArea .groupsBox dl dt span,
+.footer .footerInnerArea .groupsBox h3 {font:bold 19px/19px var(--primary-font-family); color:#95C8CD; margin:0px 0px 21px; padding:0px}
+.footer .footerInnerArea .groupsBox dl ,
+.footer .footerInnerArea ul{margin:0px; padding:0px; list-style:none}
+.footer .footerInnerArea .groupsBox dl dd,
+.footer .footerInnerArea ul li {margin:4px 0px 0px;}
+.footer .footerInnerArea .groupsBox dl dd a ,
+.footer .footerInnerArea .groupsBox dl dd a span ,
+.footer .footerInnerArea ul li a{font:13px/18px var(--primary-font-family); color:#CCCCCC; text-decoration:none}
+.footer .footerInnerArea .groupsBox dl dd a:hover ,
+.footer .footerInnerArea .groupsBox dl dd a:hover span ,
+.footer .footerInnerArea dl dd a:hover {color:#E40480}
+.footer .footerInnerArea .groupsBox h3 span {font: bold 19px/19px var(--primary-font-family);}
+.footer .footerInnerArea .remindBlock {width: 874px; padding: 10px; font: bold 15px/19px var(--primary-font-family); color: #95C8CD; border-width: 3px; border-color: #95C8CD; border-style: solid; border-radius: 10px; margin: 0 0 30px 26px;}
+/*樓層*/
+.floor{background-color: #FFFFFF;}
+.floor a{display:block;}
+#bt_0_235_01 {border-bottom: 0px; border-right: 0px;}
+.floor .prdListArea ul li a .prdName {word-wrap:break-word;}
+/*圓標*/
+.prdGoodsImgWrap{ width: 100%; height: 84px; position: relative; display: inline-block; vertical-align:top;}
+.prdGoodsImgWrap .goodsImgTag{width:32%; height:auto; display:inline-block; position:absolute; top:0; left:0; margin:0; padding:0;}
+.prdGoodsImgWrap .goodsImgTag img{width: 100%; height: auto; display:inline-block; margin:0; padding:0;}
+.floor .prdListArea ul .prdS a .prdGoodsImgWrap{margin-top: 0;}
+.floor .prdListArea ul .prdS a .prdGoodsImgWrap .goodsImgTag{top:10px}
+
+/*選單*/
+.content-2 .menubox_title {position: absolute; top: -36px; left: 0px; box-shadow: 0px 10px 9px -1px rgba(0, 0, 0, 0.5); z-index: 1}
+
+#bt_0_layout_b345.selectedhead #bt_0_245_01 {margin-left: 580px;}
+#bt_0_layout_b347 .bt_0_247 .TabContent div img {width:818px ;  height:370px ;}
+
+/*20200512_h1-h3調整*/
+.footer .footerInnerArea .groupsBox p {font:bold 19px/19px var(--primary-font-family); color:#95C8CD; margin:0px 0px 21px; padding:0px}
+
+/* 20200430_SEO_h1-h3標籤修改 _搜尋結果頁*/
+.headcontent-2 .searchbox  h1{z-index: -1;font-size: 15px;color: #fff;position: absolute;visibility: hidden;}
+
+/*20200508_h1-h3調整_首頁*/
+.BodyBase h1.momoTitle {display: inline-block; margin: 0; padding: 0; font: 40px/40px var(--primary-font-family); position: absolute; top: 0; left: 0; z-index: -1; color: #ececec;}
+
+/* 20200623_2019011000064273_商品圓標範圍增加 */
+/* .prdImgWrap {position: relative;display: inline-block;vertical-align:top;line-height: 0px;} */
+.prdImgWrap .imgTag {width:32%;height: auto;display:inline-block;}
+.prdImgWrap .imgTag img {display:inline-block;}
+/*圓標_會員中心_追蹤清單&補貨通知*/
+.customercenter .summary02 .inner dt span.imgTag {margin: 0px; font-size: 0px; color: transparent;}
+/*圓標_任選專區*/
+.newOptionalArea .informationArea .bottomMationArea .viewArea ul li .prdImgWrap .imgTag img {width: 100%; height: auto;}
+.newOptionalArea .prdListArea .prdArea li .imgTag{z-index:unset;}
+.newOptionalArea .prdListArea .prdArea li .imgTag img{width:100%;height:auto;}
+/*圓標_分類頁_列表*/
+.prdListArea#columnType div.prdImgWrap .imgTag img{width:100%;height:auto;}
+/*圓標_規格浮層*/
+.prdTypeArea .prdImgWrap .imgTag{top:20px;left:20px}
+/*圓標_搜尋結果頁_商品列表(列表模式)*/
+.searchListArea .searchPrdListArea #columnType ul li a .prdImgWrap{float:left;}
+
+/*共用浮層-按鈕樣式*/
+.floatingLayerBox .buttonArea{display: inline-block; width: 100%; text-align: center; margin: 16px 0 0 0;}
+.floatingLayerBox .buttonArea a{display: inline-block; background-color: #e7e7e7; color: #454a55; height: 30px; cursor: pointer; font: 16px/30px var(--primary-font-family); padding: 0 50px;}
+.floatingLayerBox .buttonArea a.leftButton{margin: 0 10px 0 0;}
+.floatingLayerBox .buttonArea a.applybtn {background-color: #D62672;color: #ffffff;}
+
+/* 20201112_EC大網_規格圖上傳_規格浮層UI調整 */
+.prdTypeArea {background-color:#FFFFFF; width:440px; position:absolute; top:50%; left:50%; z-index:1001; display:none}
+.prdTypeArea .closebtn_new {background:#E7E7E7; height:50px; display:block; width:100%; padding:0px; margin:0px}
+.prdTypeArea .closebtn_new a {width:100%; height:50px; position:relative; cursor:pointer; margin:0px; padding:0px; display:inline-block; font: 16px/50px var(--primary-font-family); text-align:center; color:#000000}
+.prdTypeArea .closebtn_new b {width:100%; height:50px; position:relative; cursor:pointer; margin:0px; padding:0px; display:inline-block; font: 16px/50px var(--primary-font-family); text-align:center; color:#000000; font-weight: 500;}
+.prdTypeArea .closebtn_new a::before,
+.prdTypeArea .closebtn_new a::after {background-color:#818181; width:20px; height:2px; content: ''; margin:-1px 0px 0px -12px; position:absolute; top:50%; right:10px; transform: rotate(45deg)}
+.prdTypeArea .closebtn_new a::after {transform: rotate(-45deg)}
+.prdTypeArea .prdImgBlock{line-height: 0;position: relative;padding: 20px 20px 0px 20px;box-sizing:border-box;width:100%;}
+.prdTypeArea .prdImgBlock .swiper-button-next{position: absolute;right: 0;width: 60px;height: 60px;border-top-left-radius: 5px;border-bottom-left-radius: 5px;background-color: rgba(0,0,0,0.2);}
+.prdTypeArea .prdImgBlock .swiper-button-prev{position: absolute;left: 0;width: 60px;height: 60px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;background-color: rgba(0,0,0,0.2);}
+.swiper-button-next:after, .swiper-container-rtl .swiper-button-prev:after{display:none;}
+.swiper-button-prev:after, .swiper-container-rtl .swiper-button-next:after{display:none;}
+.swiper-button-next:before, .swiper-container-rtl .swiper-button-prev:before{content: "";background: url(/ecm/img/cmm/arrowIcon.png)no-repeat center/100%;width: 100%;height: 100%;display: block;}
+.swiper-button-prev:before, .swiper-container-rtl .swiper-button-next:before{content: "";background: url(/ecm/img/cmm/arrowIcon.png)no-repeat center/100%;width: 100%;height: 100%;display: block;transform: rotate(180deg);}
+.prdTypeArea .swiper-button-next:before, .prdTypeArea .prdTypeArea .swiper-container-rtl .swiper-button-prev:before, .prdTypeArea .swiper-button-prev:before, .prdTypeArea .swiper-container-rtl .swiper-button-next:before{background-size: 70% auto;}
+.swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled{opacity: 1;display: none;}
+.prdTypeArea .detailArea{padding:0 20px;margin: 0;box-sizing: border-box;}
+.prdTypeArea .detailArea .prdInfoBlock{padding: 10px 0 20px 0;border-bottom: 1px solid #cccccc; display:block;}
+.prdTypeArea .detailArea .prdInfoBlock .prdName{font: 15px/20px var(--primary-font-family);margin: 0 0 5px 0;color:#000000; text-align:left;padding:0px; overflow:hidden; box-sizing: border-box}
+.prdTypeArea .detailArea .prdInfoBlock .money {width:400px; height:30px; font:13px/30px var(--primary-font-family); color:#d62872; margin:0px; padding:0px}
+.prdTypeArea .detailArea .prdInfoBlock .money b{display: inline-block;font:24px/30px var(--price-font);margin:0px 0px 0px 2px}
+.prdTypeArea .detailArea .prdInfoBlock .money .discountTxt{font:12px/13px var(--primary-font-family); color:#999999;}
+.prdTypeArea .detailArea .prdScroll{overflow-y: auto;max-height: 264px;padding: 0;}
+.prdTypeArea .detailArea .prdScroll .convenience{padding: 20px 0;box-sizing: border-box;margin: 0;border-bottom: 1px solid #cccccc;position:relative;}
+.prdTypeArea .detailArea .prdScroll .convenience dt{position: relative;margin: 0 0 15px 0;font: 15px/20px var(--primary-font-family);height: 20px;}
+.prdTypeArea .detailArea .prdScroll .convenience dd {height:30px; display:inline-block; vertical-align:top; width:100%; box-sizing:border-box; color:#333;margin: 0;}
+.prdTypeArea .detailArea .prdScroll .convenience dd img {display:none}
+.prdTypeArea .detailArea .prdScroll .convenience dd label {width:calc(100% - 31px); height:30px; margin:0px; padding:0px; display:inline-block; font:13px/30px var(--primary-font-family);color: #888888;; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:middle;}
+.prdTypeArea .detailArea .prdScroll .convenience dd input {margin: 1px 5px 0px 0px;vertical-align: middle;}
+.prdTypeArea .detailArea .prdScroll .convenience dd label i {display: inline-block;font: 15px/30px var(--primary-font-family);color: #000;margin: 0px 5px 0px 0px;}
+.prdTypeArea .detailArea .prdScroll .formatBlock{padding: 20px 0;box-sizing: border-box;border-bottom: 1px solid #cccccc;}
+.prdTypeArea .detailArea .prdScroll .formatBlock b{font: 15px/20px var(--primary-font-family);display: block;margin: 0 0 15px 0;}
+.prdTypeArea .detailArea .prdScroll .formatBlock b span{font: 13px/20px var(--primary-font-family);color: #d22;margin: 0 0 0 10px;}
+.prdTypeArea .detailArea .prdScroll .formatBlock b i{display:none}
+.prdTypeArea .detailArea .prdScroll .formatBlock ul{padding: 0;margin: 0;display: inline-block;font-size: 0;}
+.prdTypeArea .detailArea .prdScroll .formatBlock ul li{font: 13px/30px var(--primary-font-family);padding: 0 10px;box-sizing: border-box;display: inline-block;border: 1px solid #AAAAAA;margin: 0 5px 5px 0;color: #333333;position: relative;cursor: pointer;}
+.prdTypeArea .detailArea .prdScroll .formatBlock ul li i{font: 13px/30px var(--primary-font-family);}
+.prdTypeArea .detailArea .prdScroll .formatBlock ul .selected{color: #D62872;}
+.prdTypeArea .detailArea .prdScroll .formatBlock ul .selected::before{content: "";border: 1px solid #D62872;outline: 1px solid #D62872;position: absolute;bottom: 0;right: 0;display: inline-block;width: 100%;height: 100%;box-sizing: border-box;}
+.prdTypeArea .detailArea .prdScroll .formatBlock ul .selected::after{display: inline-block;height: 12px;width: 12px;position: absolute;bottom: 1px;right: 0px;content: '';background: url(/ecm/img/ec-images/common/png/prdSelect.png)no-repeat scroll 0 0;}
+.prdTypeArea .detailArea .prdScroll .formatBlock ul .disabled{border: 1px solid #e1e1e1;color: #cccccc;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity{padding: 20px 0;box-sizing: border-box;margin: 0;display: flex;justify-content: space-between;align-items: center;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity b{font: 15px/30px var(--primary-font-family);display: inline-block;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle{font-size: 0;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle .numberArea{position: relative;left: 0;width: 30px;height: 30px;box-sizing: border-box;border:none;text-align: center;vertical-align: top;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle span{width: 30px;height: 30px;background: #F2F2F2;display: inline-block;vertical-align: top;border-radius: 2px;cursor: pointer;position: relative;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle span.selected::before,.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle span.selected::after{background-color: #cccccc;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle .minusBtn::before{content: '';display: inline-block;width: 13px;height: 3px;background-color: #666666;position: absolute;top: 14px;left: 9px;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle .plusBtn::before{content: '';display: inline-block;width: 13px;height: 3px;background-color: #666666;position: absolute;top: 14px;left: 9px;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .numberStyle .plusBtn::after{content: '';display: inline-block;width: 3px;height: 13px;background-color: #666666;position: absolute;top: 9px;left: 14px;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .stockTip {margin: 0 0 0 10px; font: 15px/30px var(--primary-font-family); display: inline-block;}
+.prdTypeArea .detailArea .prdScroll .buyQuantity .stockTip span {color: #d62872; margin: 0 5px;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock{padding: 20px 0;box-sizing: border-box;border-bottom: 1px solid #cccccc;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock b{font: 15px/20px var(--primary-font-family);display: block;margin: 0 0 5px 0;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock i{font: 13px/20px var(--primary-font-family);display: block;color: #888888;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul{padding: 0;margin: 10px 0 0 0;font-size:0}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul .iconplus{text-align: center;padding: 0 5px;box-sizing: border-box;color: #bdb2b5;font: bold 20px/30px var(--primary-font-family);width: 85px;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li{display: inline-block;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li .setprdImg{margin: 0 10px 0 0;display: inline-block;width: 85px;height: 85px;vertical-align: top;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li .setprdInfo{width: 288px;margin: 0;display: inline-block;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li .setprdInfo .setprdName{font-size:15px;line-height:20px;font-family:"Microsoft JhengHei",sans-serif;font-family:var(--primary-font-family);height:40px;margin:0 0 10px 0;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;display:-webkit-box;text-overflow:ellipsis;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li .setprdInfo .setprdMode{margin: 0;position: relative;white-space: nowrap;font: 15px/35px var(--primary-font-family);padding: 0 5px 0 5px;box-sizing: border-box;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li .setprdInfo .setprdMode select{margin: 0;font: 15px/20px var(--primary-font-family);display: inline-block;height: 35px;width: 245px;background: #F2F2F2;padding: 0px 10px;box-sizing: border-box;border-radius: 5px;border: none;appearance: none;color: #000;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li .setprdInfo .setprdMode b{display: inline-block;font: 15px/35px var(--primary-font-family);float: right;}
+.prdTypeArea .detailArea .prdScroll .setformatBlock ul li .setprdInfo .installTxt{font: 13px/13px var(--primary-font-family);display: block;margin: 10px 0 0 0;color: #454545;}
+.prdTypeArea .buyBtn{padding:10px 20px;box-sizing: border-box;margin: 0;height: 60px;background: #fff;border-top:1px solid #cccccc;display:block;text-align: center;}
+.prdTypeArea .buyBtn a{background: #d62872;color: #fff;font: bold 17px/40px var(--primary-font-family);display: inline-block;width: 100%;border-radius: 2px;}
+.prdTypeArea .buyBtn .soldout{background: #D7D7D7;color: #888888;}
+.prdTypeArea .buyBtn .remindme{background: #FF9203;color: #ffffff;}
+.prdTypeArea .preOrderDiv {text-align:center;color:#FFFFFF;font: 13px/30px var(--primary-font-family);background: #F3A946;position: relative;line-height: 18px;padding: 7px 0;}
+
+/* 大家電加購 */
+.prdTypeArea .detailArea .installBox{width:100%;margin:0;padding:20px 0;display:inline-block; border:0;border-bottom: 1px solid #cccccc;}
+.prdTypeArea .detailArea .installBox li{display:inline-block;font: 15px/20px var(--primary-font-family);width: 100%;vertical-align: middle;}
+.prdTypeArea .detailArea .installBox li:first-child{font: 15px/20px var(--primary-font-family);margin: 0 0 15px 0;}
+.prdTypeArea .detailArea .installBox input{vertical-align: text-top;}
+.prdTypeArea .detailArea .installCost{color:#d62872; display:inline-block;}
+.prdTypeArea .detailArea .installBox .installHelp{display: inline-block; padding: 0 10px; color: #3366FF; font: 13px/25px var(--primary-font-family); text-align: center; cursor: pointer; border: 0; outline: none;}
+
+/* 開賣通知 */
+.prdTypeArea .saleNoticeBox {display:inline-block;width:100%;box-sizing: border-box;text-align: center;line-height: 0px;}
+.prdTypeArea .saleNoticeBox b {display:inline-block;width:100%;box-sizing: border-box;font: 13px/30px Helvetice;background-color: #fff3f4;}
+.prdTypeArea .saleNoticeBox .innerBox{padding:10px 20px;border-top:1px solid #cccccc;box-sizing: border-box;height: 60px;}
+.prdTypeArea .saleNoticeBox .innerBox .saleNoticeBtn {background-color: #ff9000;height: 40px;font: 15px/40px Helvetice;color: #FFFFFF;text-align: center;margin: 0px;display: block;}
+.prdTypeArea .saleNoticeBox .innerBox .noticSelected.saleNoticeBtn {background-color: #ffffff; color: #ff9000; border: 1px solid #ff9000;}
+
+/* 2023/02/22 限縮館架大網 */
+.ui-menu .ui-menu-item.goLibrary a {font-size: 15px;line-height: 40px;font-family: var(--primary-font-family);text-decoration: none; display: block; zoom: 1; padding: 4px 15px; box-sizing: border-box; position: relative; text-align: left;text-overflow: ellipsis; overflow: hidden; white-space: nowrap;color: #454545;}
+.ui-menu .ui-menu-item.goLibrary span.ac_text {color: #027BFF;}
+.ui-menu .ui-menu-item.goLibrary span.ac_text strong {color: #027BFF;height: auto;font-weight: bold;display: inline-block;vertical-align: top;box-sizing: border-box;padding: 0px 4px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;max-width: 160px; font-size: 15px; line-height: 40px; font-family: var(--primary-font-family); }
+.ui-menu .ui-menu-item.goLibrary span.ac_keyWord {margin-left: 2px;}
+
+/* 2023/06/26 移除搜尋13字限制 */
+.ui-menu { list-style: none; padding: 0px; margin: 0; display: block; float: left; z-index: 110!important; border-radius: 18px; overflow: hidden; background-color: #FFFFFF;}
+.ui-menu li:hover { background-color: #F2F2F2;}
+.ui-menu .ui-menu-item a { text-decoration: none; display: block; zoom: 1; padding: 4px 15px; box-sizing: border-box; position: relative; text-align: left; font-size: 15px; line-height: 28px; font-family: var(--primary-font-family);}
+.ui-menu .ui-menu-item a .kwTxt { color: #454545; width: calc(100% - 100px); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: inline-block; vertical-align: bottom; }
+.ui-menu .ui-menu-item a .kwTxt .categoryText { color: #D62872; margin-left: 5px; }
+.ui-menu .ui-menu-item a .kwCnt { color: #888888; float: right; font: 13px/28px var(--primary-font-family); width: 90px; text-align: right; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; position: static; }
+li.goCate.ui-menu-item a { font-size: 15px; line-height: 40px; font-family: var(--primary-font-family); padding-left: 10px; }
+li.goCate.ui-menu-item a img { vertical-align: top; margin: 0px 5px 0px 0px; border-radius: 4px; }
+li.goCate.ui-menu-item .cateName { color: #027BFF; }
+li.goCate.ui-menu-item .cateWording { color: #027BFF; }
+.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active {background-color: #F2F2F2;}
+.ui-menu .ui-menu-item {border-bottom: 1px solid #d7d7d7}
+.ui-menu .ui-menu-item:last-child {border-bottom: 0;}
+
+/* 規格浮層新增一品多價(IT057-2024110800085)*/
+.prdTypeArea .detailArea .prdInfoBlock > .ec-prices-group{flex-wrap:wrap;margin-bottom:0;align-items:baseline;}
+.prdTypeArea .detailArea .prdInfoBlock > .ec-prices-group li{align-items:center;}
+.prdTypeArea .detailArea .prdInfoBlock .ec-current-prices{align-items:baseline;font-family:var(--price-font);font-size:24px;font-weight:normal;line-height:1;}
+.prdTypeArea .detailArea .prdInfoBlock .ec-current-price{margin-left:2px;}
+.prdTypeArea .detailArea .prdInfoBlock .ec-price-symbol,.prdTypeArea .detailArea .prdInfoBlock .ec-price-from{font-family:var(--primary-font-family);font-size:13px;line-height:18px;}
+.prdTypeArea .detailArea .prdInfoBlock .ec-current-prices-group>li+li:before{margin:0 2px;}
+
+/* 規格浮層新增3p商品配送方式(IT057-2024110800085)*/
+.prdTypeArea .detailArea > .prdScroll .shipping-method *{box-sizing:border-box;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method{font-family:var(--primary-font-family);padding:20px 0;box-sizing:border-box;margin:0;border-bottom:1px solid #ccc;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method > dt{position:relative;margin:0 0 15px 0;font-size:15px;line-height:20px;height:20px;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method .alert-warning {font: 13px / 20px var(--primary-font-family);color: #d22;color: var(--red-500);}
+.prdTypeArea .detailArea > .prdScroll .shipping-method > dd{height:30px;display:flex;align-items:center;color:#333;margin:0;gap:6px;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method > dd > input{margin:0;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method > dd > label{height:30px;margin:0px;padding:0px;display:inline-flex;align-items:center;gap:6px;overflow:hidden;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method > dd .method-text{font-size:15px;line-height:20px;color:#000;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method > dd .shipping-info{color:#888;display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:30px;cursor:pointer;}
+.prdTypeArea .detailArea > .prdScroll .shipping-method > dd .fee-info{background:url(/ecm/img/cmm/3P/chevron-small-right-gray.svg) no-repeat center center/cover;display:inline-flex;align-items:center;justify-content:center;height:20px;width:20px;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle{background:#fff;color:#404040;font-family:var(--primary-font-family);padding:20px 0;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle:before{background:#f2f2f2;background:var(--neutral-50);content:"";display:block;height:10px;margin-bottom:20px;width:100%;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle .head{font-size:15px;line-height:20px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:15px;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle .alert-warning{color: #d22; font-size:13px;line-height:18px;font-weight:400;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle .body{font-size:13px;line-height:18px;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle .btn-group{display:flex;align-items:center;justify-content:flex-start;gap:5px;margin-bottom:15px;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle .title{font-size:15px;line-height:20px;font-weight:700;margin-bottom:8px;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle .detail{margin-bottom:8px;}
+.prdTypeArea .detailArea > .prdScroll .four-appliance-recycle .note{color:#999;margin-top: 8px;}
+/* 新增3p商品配送方式說明浮層內容樣式(IT057-2024110800085)*/
+.shipping-method-container{color:#404040;font-family:var(--primary-font-family);}
+.shipping-method-container ul,.shipping-method-container ol,.shipping-method-container li{margin:0;padding:0;list-style:none;}
+.shipping-method-container > .shipping-method-item{padding:0 0 10px;}
+.shipping-method-container > .shipping-method-item + .shipping-method-item{border-top:1px solid #f2f2f2;padding:10px 0;}
+.shipping-method-container > .shopping-method-note{font-size:13px;line-height:18px;color:#d22;text-align:center;}
+.shipping-method-container + .modal-foot {padding: 0;margin-top: 16px;}
+.shipping-method-item > .item-title{display:flex;align-items:flex-end;gap:10px;margin-bottom:4px;}
+.shipping-method-item > .item-title .name{font-size:15px;line-height:20px;font-weight:bold;}
+.shipping-method-item > .item-title .fee{font-size:13px;line-height:18px;}
+.shipping-method-item > .item-title .highlight-lable{background:#fdf2f2;border-radius:4px;color:#d22;font-size:13px;line-height:18px;padding:1px 4px;}
+.shipping-method-item > .item-content .notes,.shipping-method-item > .item-content .notes > li{margin-bottom:4px;}
+.shipping-method-item > .item-content .notes{font-size:13px;line-height:18px;color:#999;}
+.shipping-method-item > .item-content .promotion-details{font-size:15px;line-height:20px;}
+.shipping-method-item > .item-content .promotion-details > li{display:flex;align-items:flex-start;gap:5px;}
+.shipping-method-item > .item-content .promotion-details > li:not(:last-child){margin-bottom:5px;}
+.shipping-method-item > .item-content .promotion-details .title{background:#fef2f2;border-radius:4px;color:#d22;font-size:13px;line-height:18px;padding:1px 4px;width:60px;height:20px;flex-shrink:0;text-align: center;}
+/* 商品頁-適用折價券浮層調整(IT057-2024110800098) */
+.coupon-applicable-box .usableCoupon{background-color:#fff;color:#404040;font-family:var(--primary-font-family);width:760px;display:none;top:50%;left:50%;z-index:1000;}
+.coupon-applicable-box .usableCoupon .promotePrice{display:flex;align-items:flex-end;font-size:15px;line-height:20px;margin:0;}
+.coupon-applicable-box .usableCoupon .promotePrice::before{background-color:#d62872;content:"";display:inline-flex;height:36px;width:3px;margin-right:7px;}
+.coupon-applicable-box .usableCoupon .promotePrice>b{color:#d62872;margin:0 5px;font-family:var(--price-font);font-size:30px;font-weight:normal;line-height:1;}
+.coupon-applicable-box .usableCoupon .couponListRow,.coupon-applicable-box .usableCoupon .couponNoteText{color:#d62872;font-size:17px;line-height:24px;margin:20px 0;}
+.coupon-applicable-box .usableCoupon .couponListRow>b{color:#d62872;margin:0 5px;}
+.coupon-applicable-box .usableCoupon .couponList>.coupon-list-title{font-size:17px;line-height:24px;padding:8px 0;font-weight:bold;background:#d9d9d9;display:flex;align-items:center;justify-content:center;}
+.coupon-applicable-box .usableCoupon .couponList table{border-spacing:0;font-size:17px;line-height:24px;width:100%;}
+.coupon-applicable-box .usableCoupon .couponList th{background:#ededed;padding:8px;}
+.coupon-applicable-box .usableCoupon .couponList td{border:1px solid #f2f2f2;border-width:0 1px 1px 0;padding:10px 15px;text-align:center;}
+.coupon-applicable-box .usableCoupon .couponList td:first-child{border-left:1px solid #f2f2f2;}
+.coupon-applicable-box .usableCoupon .couponList td.couponName{text-align:left;}
+.coupon-applicable-box .usableCoupon .couponList td.couponName>span{display:block;}
+.coupon-applicable-box .usableCoupon .couponList td.finalPrice{color:#d62872;font-size:13px;line-height:18px;}
+.coupon-applicable-box .usableCoupon .couponList td.finalPrice>b{font-size:19px;line-height:24px;font-family:var(--price-font);font-weight:normal;}
+.coupon-applicable-box .usableCoupon .couponInfo ul,.coupon-applicable-box .usableCoupon .couponInfo ol{font-size:15px;line-height:20px;margin:15px 0;padding-left:0;}
+.coupon-applicable-box .usableCoupon .couponInfo ol{list-style:inside decimal;}
+.coupon-applicable-box .usableCoupon .couponNoteText{color:#D22;}
+.coupon-applicable-box .usableCoupon .noCoupon{padding:80px 0 140px;font-size:18px;line-height:30px;font-weight:bold;color:#666;text-align:center;vertical-align:middle}
+.coupon-applicable-box .btn-box{display:flex;align-items:center;justify-content:center;}
+.coupon-applicable-box .btn-box > .ec-btn{display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;line-height:20px;min-width:132px;height:30px;}

@@ -6,6 +6,7 @@
         <router-link to="/p2p-test">P2P測試</router-link> |
         <router-link to="/product-images">產品圖片測試</router-link> |
         <router-link to="/resources">資源管理</router-link>
+        <router-link to="/multi-js-test">多JS檔案測試</router-link>
       </nav>
       <P2PStatusBar />
     </header>

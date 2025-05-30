@@ -27,7 +27,7 @@ export class P2PManager {
         // 全局傳輸狀態追蹤
         this.globalTransferState = {
             currentTransfers: new Set(), // 當前正在傳輸的請求ID集合
-            maxConcurrentTransfers: 2    // 最大並發傳輸數
+            maxConcurrentTransfers: 3    // 最大並發傳輸數
         };
 
         // 全局資源查找映射
@@ -50,10 +50,10 @@ export class P2PManager {
 
         // 調整緩衝區管理設定
         this.bufferConfig = {
-            checkThreshold: 256 * 1024,  // 檢查緩衝區的閾值降至256KB
-            lowThreshold: 64 * 1024,     // 等待緩衝區降至64KB才繼續
-            chunkSize: 64 * 1024,        // 分片大小設為64KB
-            largeFileThreshold: 250 * 1024 // 大於100KB的文件使用分片
+            checkThreshold: 512 * 1024,  // 檢查緩衝區的閾值降至256KB
+            lowThreshold: 128 * 1024,     // 等待緩衝區降至64KB才繼續
+            chunkSize: 128 * 1024,        // 分片大小設為64KB
+            largeFileThreshold: 300 * 1024 // 大於100KB的文件使用分片
         };
 
         // 初始化消息處理器系統
@@ -90,7 +90,7 @@ export class P2PManager {
         });
 
         // 小檔案系統適用的標準化方式
-        const maxBufferSize = 15 * 1024 * 1024; // 提高閾值至15MB
+        const maxBufferSize = 20 * 1024 * 1024; // 提高閾值至15MB
         const normalizedBuffer = Math.min(totalBuffered / maxBufferSize, 1.0);
 
         // 計算加權總負載
@@ -947,40 +947,37 @@ export class P2PManager {
         }
     }
 
-    // 輔助方法: 等待緩衝區減小
+    // === 同時修復 p2p_manager.js 的緩衝區問題 ===
     async _waitForBufferLow(dataChannel) {
-        console.log(`[P2P改進] 等待數據通道緩衝區減小，當前: ${dataChannel.bufferedAmount}字節`);
+        const currentBuffered = dataChannel.bufferedAmount;
+        const threshold = this.bufferConfig.lowThreshold;
+
+        // 立即檢查修復
+        if (currentBuffered <= threshold) {
+            console.log(`[P2P緩衝區] 緩衝區已安全: ${currentBuffered}字節`);
+            return Promise.resolve();
+        }
+
+        console.log(`[P2P緩衝區] 等待緩衝區減小: ${currentBuffered} -> ${threshold}`);
 
         return new Promise(resolve => {
-            // 設置緩衝區閾值
-            dataChannel.bufferedAmountLowThreshold = this.bufferConfig.lowThreshold;
+            const startTime = Date.now();
+            const checkInterval = setInterval(() => {
+                const current = dataChannel.bufferedAmount;
+                const elapsed = Date.now() - startTime;
 
-            // 監聽緩衝區低事件
-            const handleBufferLow = () => {
-                console.log(`[P2P改進] 緩衝區已減小到閾值以下: ${dataChannel.bufferedAmount}字節`);
-                dataChannel.removeEventListener('bufferedamountlow', handleBufferLow);
-                resolve();
-            };
-
-            // 立即檢查緩衝區狀態
-            if (dataChannel.bufferedAmount <= this.bufferConfig.lowThreshold) {
-                console.log(`[P2P改進] 緩衝區已在閾值以下: ${dataChannel.bufferedAmount}字節`);
-                resolve();
-                return;
-            }
-
-            // 添加緩衝區低事件監聽
-            dataChannel.addEventListener('bufferedamountlow', handleBufferLow);
-
-            // 同時設置超時，以防事件未觸發
-            setTimeout(() => {
-                dataChannel.removeEventListener('bufferedamountlow', handleBufferLow);
-                console.warn(`[P2P改進] 等待緩衝區減小超時，當前: ${dataChannel.bufferedAmount}字節`);
-                resolve(); // 即使超時也繼續，但可能會導致傳輸問題
-            }, 2000);
+                if (current <= threshold) {
+                    clearInterval(checkInterval);
+                    console.log(`[P2P緩衝區] 緩衝區已減小: ${current}字節 (${elapsed}ms)`);
+                    resolve();
+                } else if (elapsed > 3000) {
+                    clearInterval(checkInterval);
+                    console.warn(`[P2P緩衝區] 等待超時，強制繼續: ${current}字節`);
+                    resolve();
+                }
+            }, 100);
         });
     }
-
     //==========================
     // 改進版: Blob數據封包和分片處理
     //==========================

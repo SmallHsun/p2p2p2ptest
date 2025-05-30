@@ -23,37 +23,12 @@
     <div class="local-image-section">
       <h3>本地資源圖片</h3>
       <div class="image-examples">
-        <div class="example-image">
-          <img :src="getImageUrl(566)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
-        </div>
+  
         <div class="example-image">
           <img :src="getImageUrl(6)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
         </div>
         <div class="example-image">
-          <img :src="getImageUrl(11)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
-        </div>
-        <div class="example-image">
-          <img :src="getImageUrl(32)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
-        </div>
-        <div class="example-image">
-          <img :src="getImageUrl(148)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
-        </div>
-        <div class="example-image">
-          <img :src="getImageUrl(175)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
-        </div>
-        <div class="example-image">
-          <img :src="getImageUrl(833)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
-        </div>
-        <div class="example-image">
-          <img :src="getImageUrl(2)" alt="本地圖片1" />
-          <p>本地圖片 1</p>
+          <img :src="getImageUrl2(132)" alt="本地圖片1" />
         </div>
       </div>
     </div>
@@ -108,6 +83,20 @@ const products = ref([
 const getImageUrl = (fileIndex) => {
   return new URL(
     `../assets/${fileIndex}.png`,
+    import.meta.url
+  ).href;
+};
+
+const getImageUrl1 = (fileIndex) => {
+  return new URL(
+    `../assets/${fileIndex}.jpg`,
+    import.meta.url
+  ).href;
+};
+
+const getImageUrl2 = (fileIndex) => {
+  return new URL(
+    `../assets/${fileIndex}.webp`,
     import.meta.url
   ).href;
 };

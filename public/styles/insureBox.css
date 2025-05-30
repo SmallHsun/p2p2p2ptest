@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+.insure-box { margin: 15px 0 30px 0;}
+.insure-box .insure-box-inner { display: flex; align-items: center;}
+.insure-box .insure-box-inner:not(:last-of-type) { margin-block-end: 4px;}
+.insure-box-title { font: bold 13px/18px var(--primary-font-family); color: #454545; }
+.insure-box-title-right { float: right; font: 13px/18px var(--primary-font-family); }
+.insure-check-area { display: flex; padding: 15px 0; border-top: 1px solid #E1E1E1; border-left: 10px solid #fff; border-right: 10px solid #fff;}
+.check-item { width: 0px; display: inline-flex;/*align-items: center;*/justify-content: center; visibility: hidden}
+.check-item label {display: inline-flex; justify-content: center;}
+.check-item { width: 24px; visibility:visible;}
+.check-item02 { margin: 0 6px 0 0;}
+.check-itemAll { margin: 0 11px 0 0; }
+.check-item input[type="checkbox"] {-webkit-appearance: none; display: inline-block;width: 24px;height: 24px; margin: 0; background:url("/ecm/img/cmm/checkbox_01.svg") no-repeat scroll center / 100% ;}
+.check-item input[type="checkbox"]:checked {background: url("/ecm/img/cmm/checkbox_03.svg") no-repeat center/100%;}
+.check-itemAll input[type="checkbox"]:checked {background: url("/ecm/img/cmm/checkbox_02.svg") no-repeat center/100%;}
+.insure-check-p { font: 15px/20px var(--primary-font-family); color: #454545;}
+.insure-check-a { color: #027BFF;}
+.insure-check-a:hover { cursor: pointer;}
+.insure-box .insure-cont-check { font: 15px/20px var(--primary-font-family); color: #454545;}
+.insure-box-p { margin-left: 10px; font: bold 13px/20px var(--primary-font-family); color: #030303;}
+.insure-box-a { color: #027BFF;}
+
+
+
+/* 保險說明浮層 */
+.float-inner{ background-color: #fff;}
+.float-inner-title { padding: 20px 30px 10px 30px; font: bold 15px/20px var(--primary-font-family); color: #454545; }
+.float-info { padding: 0 30px; display: grid; grid-template-columns: 60px auto;}
+.info-title { width: 60px; height: 22px; background-color: #FFF3F4; border-radius: 4px; text-align: center; font: 13px/22px var(--primary-font-family); color: #DD2726; }
+.info-ol { margin: 0; padding: 0 0 0 27px;}
+.info-li { font: 15px/20px var(--primary-font-family); color: #454545; }
+.float-p-area { padding: 10px 0 20px 0;  border-bottom: 1px solid #F2F2F2;}
+.float-p { padding: 0 30px;}
+.float-subtitle { height: 20px; border-left: 3px solid #D62672; padding-left: 10px; margin-bottom: 10px; font: bold 15px/20px var(--primary-font-family); color: #D62672; }
+.float-info-3columns { display: grid; grid-template-columns: 134px 495px auto; align-items: center;}
+.info-img { width: 110px; margin: 0 12px; border-radius: 4px;min-height: 110px;}
+.info-p {font: 15px/20px var(--primary-font-family); color: #454545; padding-left: 10px;}
+.info-num { text-align: center; font: 24px/30px var(--primary-font-family); color: #D62672;}
+.float-hint-area { padding: 20px 30px;}
+.float-hint-title { font: bold 13px/18px var(--primary-font-family); color: #454545; }
+.float-hint-ol { padding: 0 0 0 14px; margin: 0; font: 13px/18px var(--primary-font-family); color: #454545;}
+
+
+/* 同意書浮層 */
+.float-check-p { padding: 20px 30px; box-sizing: border-box; max-height: 730px; overflow-y: auto; background-color: #fff; font: 15px/20px var(--primary-font-family); color: #454545; }

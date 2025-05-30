@@ -1,0 +1,141 @@
+/* CSS reset.css 重設樣式檔案 */
+
+body,
+html {
+  scroll-behavior: smooth; /* Makes normal scrolling smooth */
+}
+
+.ec-reset div,
+.ec-reset span,
+.ec-reset applet,
+.ec-reset object,
+.ec-reset iframe,
+.ec-reset h1,
+.ec-reset h2,
+.ec-reset h3,
+.ec-reset h4,
+.ec-reset h5,
+.ec-reset h6,
+.ec-reset p,
+.ec-reset blockquote,
+.ec-reset pre,
+.ec-reset a,
+.ec-reset abbr,
+.ec-reset acronym,
+.ec-reset address,
+.ec-reset big,
+.ec-reset cite,
+.ec-reset code,
+.ec-reset del,
+.ec-reset dfn,
+.ec-reset em,
+.ec-reset img,
+.ec-reset ins,
+.ec-reset kbd,
+.ec-reset q,
+.ec-reset s,
+.ec-reset samp,
+.ec-reset small,
+.ec-reset strike,
+.ec-reset strong,
+.ec-reset sub,
+.ec-reset sup,
+.ec-reset tt,
+.ec-reset var,
+.ec-reset b,
+.ec-reset u,
+.ec-reset i,
+.ec-reset center,
+.ec-reset dl,
+.ec-reset dt,
+.ec-reset dd,
+.ec-reset ol,
+.ec-reset ul,
+.ec-reset li,
+.ec-reset fieldset,
+.ec-reset form,
+.ec-reset label,
+.ec-reset legend,
+.ec-reset table,
+.ec-reset caption,
+.ec-reset tbody,
+.ec-reset tfoot,
+.ec-reset thead,
+.ec-reset tr,
+.ec-reset th,
+.ec-reset td,
+.ec-reset article,
+.ec-reset aside,
+.ec-reset canvas,
+.ec-reset details,
+.ec-reset embed,
+.ec-reset figure,
+.ec-reset figcaption,
+.ec-reset footer,
+.ec-reset header,
+.ec-reset hgroup,
+.ec-reset menu,
+.ec-reset nav,
+.ec-reset output,
+.ec-reset ruby,
+.ec-reset section,
+.ec-reset summary,
+.ec-reset time,
+.ec-reset mark,
+.ec-reset audio,
+.ec-reset video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+/* HTML5 display-role reset for older browsers */
+.ec-reset article,
+.ec-reset aside,
+.ec-reset details,
+.ec-reset figcaption,
+.ec-reset figure,
+.ec-reset footer,
+.ec-reset header,
+.ec-reset hgroup,
+.ec-reset menu,
+.ec-reset nav,
+.ec-reset section {
+  display: block;
+}
+.ec-reset {
+  line-height: 1;
+}
+.ec-reset ol,
+.ec-reset ul {
+  list-style: none;
+}
+.ec-reset blockquote,
+.ec-reset q {
+  quotes: none;
+}
+.ec-reset blockquote:before,
+.ec-reset blockquote:after,
+.ec-reset q:before,
+.ec-reset q:after {
+  content: '';
+  content: none;
+}
+.ec-reset table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.ec-reset img,
+.ec-reset picture,
+.ec-reset svg,
+.ec-reset video,
+.ec-reset canvas {
+  max-width: 100%; /* Makes it responsive */
+  height: auto; /* Makes it responsive */
+  vertical-align: middle; /* Makes text next to inline images look better */
+  background-repeat: no-repeat;
+}

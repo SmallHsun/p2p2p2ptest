@@ -21,6 +21,11 @@ const routes = [
         path: '/product-images',
         name: 'product-images',
         component: () => import('./views/P2PProductImagesView.vue') // 懒加载
+    },
+    {
+        path: '/multi-js-test',
+        name: 'multi-js-test',
+        component: () => import('./views/MultiJsTestView.vue') // 懒加载
     }
 ];
 

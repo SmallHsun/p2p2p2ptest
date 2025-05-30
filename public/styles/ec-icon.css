@@ -1,0 +1,7 @@
+/* 店＋/ 預購 icon */
+i.store-icon,i.icon-store{margin-top:2px;background-image:url(/ecm/img/cmm/goodsdetail/Shop_16px.png);background-size:22px;width:22px !important;background-color:#5E6999;height:16px !important;border-radius:2px;display:inline;float:left;margin-right:8px}
+i.preorder-icon,i.icon-preorder{margin-top:2px;background-image:url(/ecm/img/cmm/goodsdetail/PreOrder_16px.png);background-size:16px;width:16px !important;background-color:#FF960A;height:16px !important;border-radius:2px;display:inline;float:left;margin-right:8px;}
+.bestseller .ec-flash-sale {margin-top: 2px;}
+.bestseller i.store-icon + i.preorder-icon,.bestseller i.store-icon + .ec-flash-sale,.bestseller i.preorder-icon + .ec-flash-sale{margin-left:-4px;}
+.tags i {margin: 0;}
+.bestseller i.store-icon,.bestseller i.preorder-icon,.prdName.bestseller .ec-flash-sale {float: none;vertical-align: text-top;}
